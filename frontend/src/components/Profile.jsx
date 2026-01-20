@@ -72,7 +72,6 @@ export default function Profile() {
             <a
               target="_blank"
               href={user?.profile?.resume}
-              target="blank"
               rel="noopener noreferrer"
               className="text-blue-500 w-full hover:underline cursor-pointer"
             >
@@ -81,6 +80,8 @@ export default function Profile() {
           ) : (
             <span>NA</span>
           )}
+          {/* Debugging: Show the URL to verify it updates */}
+          {/* <p className="text-xs text-gray-400 mt-2">{user?.profile?.resume}</p> */}
         </div>
       </div>
       <div className="max-w-4xl  mx-auto  bg-white rounded-2xl">

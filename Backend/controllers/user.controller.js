@@ -73,65 +73,60 @@ export const logout = async (req, res) => {
 };
 
 // --- UPDATE PROFILE (FIXED FOR PDF) ---
-// --- UPDATE PROFILE (OPTIMIZED) ---
 export const updateProfile = async (req, res) => {
     try {
         const { fullname, phoneNumber, email, bio, skills } = req.body;
-        
+
+        // 1. File Received
         const file = req.file;
-        const userId = req.id; // Ensure authentication middleware sets this
-        
+        console.log("🟢 NEW CODE RUNNING: File Received:", file ? "YES" : "NO");
+
+        const userId = req.id;
         let user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({ message: "User not found", success: false });
         }
 
-        // --- 1. CLOUDINARY UPLOAD (STREAM) ---
+        // --- CLOUDINARY UPLOAD (RAW MODE) ---
         let cloudResponse;
         if (file) {
-            // Convert buffer to readable stream
             const stream = Readable.from(file.buffer);
-            
             cloudResponse = await new Promise((resolve, reject) => {
                 const uploadStream = cloudinary.uploader.upload_stream(
                     {
-                        resource_type: "auto", // Works best for mixed file types (PDF/Images)
+                        resource_type: "raw",  // <--- YE RAW HI RAHEGA
                         folder: "resumes",
+                        format: "pdf",
+                        access_mode: "public"
                     },
                     (error, result) => {
                         if (error) {
-                            console.error("Cloudinary Upload Error:", error);
+                            console.error("🔴 Upload Error:", error);
                             reject(error);
                         } else {
+                            console.log("🟢 Upload Success (Raw Mode):", result.secure_url);
                             resolve(result);
                         }
                     }
                 );
-                // Pipe the file data to Cloudinary
                 stream.pipe(uploadStream);
             });
         }
 
-        // --- 2. UPDATE FIELDS ---
+        // Update Fields
         if (fullname) user.fullname = fullname;
         if (email) user.email = email;
         if (phoneNumber) user.phoneNumber = phoneNumber;
         if (bio) user.profile.bio = bio;
-        
-        // Fix: Trim spaces after comma (e.g., "React, Node" -> ["React", "Node"])
-        if (skills) {
-            user.profile.skills = skills.split(',').map(skill => skill.trim());
-        }
+        if (skills) user.profile.skills = skills.split(',');
 
-        // --- 3. SAVE RESUME URL ---
         if (cloudResponse) {
-            user.profile.resume = cloudResponse.secure_url; // This will now be a valid public URL
+            user.profile.resume = cloudResponse.secure_url;
             user.profile.resumeOriginalName = file.originalname;
         }
 
         await user.save();
 
-        // Return updated user object
         user = {
             _id: user._id,
             fullname: user.fullname,
@@ -141,11 +136,7 @@ export const updateProfile = async (req, res) => {
             profile: user.profile,
         };
 
-        return res.status(200).json({
-            message: "Profile updated successfully",
-            user,
-            success: true
-        });
+        return res.status(200).json({ message: "Profile updated successfully", user, success: true });
 
     } catch (err) {
         console.error(err);

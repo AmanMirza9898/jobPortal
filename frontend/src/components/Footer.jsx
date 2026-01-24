@@ -7,10 +7,10 @@ export const Footer = () => {
   return (
     <footer className="bg-white text-slate-600 font-sans pt-16 pb-8 border-t border-slate-200">
       <div className="max-w-7xl mx-auto px-6">
-        
+
         {/* Top Section: Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-16">
-          
+
           {/* Brand and Mission - 5 columns wide */}
           <div className="lg:col-span-5 space-y-6">
             <div className="flex items-center gap-2 text-blue-600 font-bold text-2xl">
@@ -18,14 +18,14 @@ export const Footer = () => {
               <span>Job<span className="text-slate-900">Portal</span></span>
             </div>
             <p className="text-[15px] leading-relaxed">
-              India's leading career platform helping millions of job seekers find their dream roles. 
-              We bridge the gap between talented professionals and top-tier organizations, 
+              India's leading career platform helping millions of job seekers find their dream roles.
+              We bridge the gap between talented professionals and top-tier organizations,
               providing advanced tools for <strong>Resume Building, Job Tracking, and AI-based Matchmaking.</strong>
             </p>
             <p className="text-[14px]">
-              <span className="font-bold text-slate-900">For Hiring:</span> From tech startups to Fortune 500 companies, 
-              we provide enterprise-grade recruitment solutions, background verification, and skill assessment 
-              tools to find the perfect fit for your team.
+              <span className="font-bold text-slate-900">For Hiring:</span> From tech startups to Fortune 500 companies,
+              we provide enterprise-grade recruitment solutions, background verification, and skill assessment
+              tools to find the perfect fit for your teams.
             </p>
             <p className="italic text-blue-600 font-medium">"Your Career Growth, Our Ultimate Mission."</p>
           </div>
@@ -57,8 +57,8 @@ export const Footer = () => {
 
           {/* Quick Support - 2 columns */}
           <div className="lg:col-span-2">
-             <h3 className="text-slate-900 font-bold text-lg mb-6">Support</h3>
-             <ul className="space-y-3 text-[15px]">
+            <h3 className="text-slate-900 font-bold text-lg mb-6">Support</h3>
+            <ul className="space-y-3 text-[15px]">
               <li><a href="#" className="hover:text-blue-600">Help Center</a></li>
               <li><a href="#" className="hover:text-blue-600">Trust & Safety</a></li>
               <li><a href="#" className="hover:text-blue-600">Privacy Policy</a></li>

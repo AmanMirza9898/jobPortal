@@ -22,7 +22,7 @@ export default function Profile() {
           <div className="flex items-center gap-4">
             <Avatar className="h-24 w-24">
               <AvatarImage
-                src="https://st.depositphotos.com/65872748/58884/v/450/depositphotos_588842318-stock-illustration-google-symbol-isolated-on-transparent.jpg"
+                src={user?.profile?.profilePhoto}
                 alt="profile"
               />
             </Avatar>

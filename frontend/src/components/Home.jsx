@@ -1,7 +1,8 @@
 import React from 'react'
 import { HeroSection } from './HeroSection'
-import {CategoryCarousel} from './CategoryCarousel'
-import {LatestJobs} from "./LatestJobs"
+import { CategoryCarousel } from './CategoryCarousel'
+import { LatestJobs } from "./LatestJobs"
+import useGetAllJobs from '@/hooks/useGetAllJobs'
 
 
 
@@ -9,12 +10,13 @@ import {LatestJobs} from "./LatestJobs"
 
 
 const Home = () => {
+  useGetAllJobs();
   return (
     <>
-    <HeroSection/>
-    <CategoryCarousel/>
-    <LatestJobs/>
-   
+      <HeroSection />
+      <CategoryCarousel />
+      <LatestJobs />
+
     </>
   )
 }

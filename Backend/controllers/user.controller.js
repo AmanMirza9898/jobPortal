@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cloudinary from "../utils/cloudinary.js";
 import { Readable } from "stream"; // Stream import zaroori hai
-
+import getDataUri from "../utils/datauri.js";
 // --- REGISTER ---
 export const register = async (req, res) => {
     try {
@@ -11,14 +11,35 @@ export const register = async (req, res) => {
         if (!fullname || !email || !phoneNumber || !password || !role) {
             return res.status(400).json({ message: "All fields are required", success: false });
         }
+
+        const file = req.file;
+        let cloudResponse;
+
+        if (file) {
+            const fileUrl = getDataUri(file);
+            cloudResponse = await cloudinary.uploader.upload(fileUrl.content);
+        }
+
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ message: "User already exists", success: false });
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-        await User.create({ fullname, email, phoneNumber, password: hashedPassword, role });
+
+        await User.create({
+            fullname,
+            email,
+            phoneNumber,
+            password: hashedPassword,
+            role,
+            profile: {
+                profilePhoto: cloudResponse ? cloudResponse.secure_url : ""
+            }
+        });
+
         return res.status(201).json({ message: "User registered successfully", success: true });
     } catch (err) {
+        console.log(err);
         return res.status(500).json({ message: "Registration failed", success: false });
     }
 };
@@ -64,9 +85,17 @@ export const login = async (req, res) => {
 };
 
 // --- LOGOUT ---
+
 export const logout = async (req, res) => {
     try {
-        return res.status(200).cookie("token", "", { maxAge: 0 }).json({ message: "Logged out successfully", success: true });
+        return res.status(200).cookie("token", "", {
+            maxAge: 0,
+            httpOnly: true,    // Added (Must match Login)
+            sameSite: "strict" // Added (Must match Login)
+        }).json({
+            message: "Logged out successfully",
+            success: true
+        });
     } catch (err) {
         return res.status(500).json({ message: "Logout failed", success: false });
     }
@@ -76,12 +105,20 @@ export const logout = async (req, res) => {
 export const updateProfile = async (req, res) => {
     try {
         const { fullname, phoneNumber, email, bio, skills } = req.body;
+<<<<<<< HEAD
 
         // 1. File Received
         const file = req.file;
         console.log("🟢 NEW CODE RUNNING: File Received:", file ? "YES" : "NO");
 
         const userId = req.id;
+=======
+        console.log("Update Profile Body:", req.body); // Debug Log
+
+        const file = req.file;
+        const userId = req.id; // Ensure authentication middleware sets this
+
+>>>>>>> e8c1ff0eccd005dd92f2ced93bd29a73dec7afdb
         let user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({ message: "User not found", success: false });
@@ -91,6 +128,10 @@ export const updateProfile = async (req, res) => {
         let cloudResponse;
         if (file) {
             const stream = Readable.from(file.buffer);
+<<<<<<< HEAD
+=======
+
+>>>>>>> e8c1ff0eccd005dd92f2ced93bd29a73dec7afdb
             cloudResponse = await new Promise((resolve, reject) => {
                 const uploadStream = cloudinary.uploader.upload_stream(
                     {
@@ -117,8 +158,22 @@ export const updateProfile = async (req, res) => {
         if (fullname) user.fullname = fullname;
         if (email) user.email = email;
         if (phoneNumber) user.phoneNumber = phoneNumber;
+<<<<<<< HEAD
         if (bio) user.profile.bio = bio;
         if (skills) user.profile.skills = skills.split(',');
+=======
+
+        // Profile object ensure karo taaki crash na ho
+        if (!user.profile) user.profile = {};
+
+        // Bio logic fix:
+        // Agar bio aa raha hai (chahe empty string ho ya text), use update karo
+        if (bio !== undefined) user.profile.bio = bio;
+
+        if (skills) {
+            user.profile.skills = skills.split(',').map(skill => skill.trim());
+        }
+>>>>>>> e8c1ff0eccd005dd92f2ced93bd29a73dec7afdb
 
         if (cloudResponse) {
             user.profile.resume = cloudResponse.secure_url;

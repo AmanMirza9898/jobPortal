@@ -1,33 +1,58 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import { JOB_API_END_POINT } from "@/utils/constant";
+import { setSingleJob } from "@/redux/jobSlice";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 export default function JobDescription() {
   const isApplied = false;
+  const params = useParams();
+  const jobId = params.id;
+  const { singleJob } = useSelector((state) => state.job);
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchSingleJob = async () => {
+      try {
+        const res = await axios.get(`${JOB_API_END_POINT}/get/${jobId}`, { withCredentials: true });
+        if (res.data.success) {
+          dispatch(setSingleJob(res.data.jobs));
+        }
+      }
+      catch (err) {
+        console.log(err);
+      }
+    }
+    fetchSingleJob();
+  }, [jobId, dispatch, singleJob?._id]);
   return (
     <>
       <div className="max-w-7xl mx-auto my-10">
-        <h1 className="font-bold text-xl ">Frontend Developer</h1>
+        <h1 className="font-bold text-xl ">{singleJob?.title}</h1>
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center gap-2 mt-4">
               <Badge className="text-blue-700 font-bold border border-gray-400">
                 {" "}
-                12 Positions
+                {singleJob?.positions} Positions
               </Badge>
               <Badge className="text-[#F83002] font-bold border-gray-400">
-                Part time
+                {singleJob?.jobType}
               </Badge>
               <Badge className="text-[#7209B7] font-bold border-gray-400">
                 {" "}
-                12 LPA
+                {singleJob?.salary} LPA
               </Badge>
             </div>
           </div>
           <Button
-            className={` text-white bg-black cursor-pointer ${
-              isApplied ? "bg-gray-500 cursor-not-allowed" : ""
-            }`}
+            className={` text-white bg-black cursor-pointer ${isApplied ? "bg-gray-500 cursor-not-allowed" : ""
+              }`}
           >
             {isApplied ? "Already Applied" : "Apply Now"}
           </Button>
@@ -39,37 +64,36 @@ export default function JobDescription() {
           <h1 className="font-bold my-1">
             Role:{" "}
             <span className="pl-4 text-gray-800 font-normal">
-              Frontend Developer
+              {singleJob?.role}
             </span>
           </h1>
           <h1 className="font-bold my-1">
             Location:{" "}
-            <span className="pl-4  text-gray-800 font-normal">Hydrabad</span>
+            <span className="pl-4  text-gray-800 font-normal">{singleJob?.location}</span>
           </h1>
           <h1 className="font-bold my-1">
             Description:{" "}
             <span className="pl-4 font-normal text-gray-800">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit,
-              consequuntur!
+              {singleJob?.description}
             </span>
           </h1>
           <h1 className="font-bold my-1">
             Experience:{" "}
-            <span className="pl-4 font-normal text-gray-800">2 yrs</span>
+            <span className="pl-4 font-normal text-gray-800">{singleJob?.experience}</span>
           </h1>
           <h1 className="font-bold my-1">
             Salary:{" "}
-            <span className="pl-4 font-normal text-gray-800">12LPA</span>
+            <span className="pl-4 font-normal text-gray-800">{singleJob?.salary}</span>
           </h1>
           <h1 className="font-bold my-1">
-            Total Application:{" "}
+            Total Applica tion:{" "}
             <span className="pl-4 font-normal text-gray-800">
-              Frontend Developer
+              {singleJob?.totalApplication}
             </span>
           </h1>
           <h1 className="font-bold my-1">
             Posted Date:{" "}
-            <span className="pl-4 font-normal text-gray-800">17-07-2026</span>
+            <span className="pl-4 font-normal text-gray-800">{singleJob?.createdAt}</span>
           </h1>
         </div>
       </div>

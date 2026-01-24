@@ -58,7 +58,7 @@ export default function UpdateProfileDialog({ open, setOpen }) {
     formData.append("phoneNumber", input.phoneNumber);
     formData.append("bio", input.bio);
     formData.append("skills", input.skills); // Backend should handle the splitting of this string
-    
+
     if (input.file) {
       formData.append("file", input.file);
     }
@@ -67,7 +67,7 @@ export default function UpdateProfileDialog({ open, setOpen }) {
       const res = await axios.post(`${USER_API_END_POINT}/profile/update`, formData, {
         headers: {
           // Allow Axios to set content-type with boundary automatically for FormData
-          "Content-Type": "multipart/form-data", 
+          "Content-Type": "multipart/form-data",
         },
         withCredentials: true,
       });
@@ -165,10 +165,11 @@ export default function UpdateProfileDialog({ open, setOpen }) {
                   id="file"
                   name="file"
                   type="file"
+
                   accept="application/pdf"
                   onChange={fileChangeHandler}
                   className="col-span-3"
-                  // Removed value={input.file} -> This is critical
+                // Removed value={input.file} -> This is critical
                 />
               </div>
             </div>

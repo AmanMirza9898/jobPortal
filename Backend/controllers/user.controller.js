@@ -102,66 +102,50 @@ export const logout = async (req, res) => {
 };
 
 // --- UPDATE PROFILE (FIXED FOR PDF) ---
+// --- UPDATE PROFILE (OPTIMIZED) ---
 export const updateProfile = async (req, res) => {
     try {
         const { fullname, phoneNumber, email, bio, skills } = req.body;
-<<<<<<< HEAD
-
-        // 1. File Received
-        const file = req.file;
-        console.log("🟢 NEW CODE RUNNING: File Received:", file ? "YES" : "NO");
-
-        const userId = req.id;
-=======
         console.log("Update Profile Body:", req.body); // Debug Log
 
         const file = req.file;
         const userId = req.id; // Ensure authentication middleware sets this
 
->>>>>>> e8c1ff0eccd005dd92f2ced93bd29a73dec7afdb
         let user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({ message: "User not found", success: false });
         }
 
-        // --- CLOUDINARY UPLOAD (RAW MODE) ---
+        // --- 1. CLOUDINARY UPLOAD (STREAM) ---
         let cloudResponse;
         if (file) {
+            // Convert buffer to readable stream
             const stream = Readable.from(file.buffer);
-<<<<<<< HEAD
-=======
 
->>>>>>> e8c1ff0eccd005dd92f2ced93bd29a73dec7afdb
             cloudResponse = await new Promise((resolve, reject) => {
                 const uploadStream = cloudinary.uploader.upload_stream(
                     {
-                        resource_type: "raw",  // <--- YE RAW HI RAHEGA
+                        resource_type: "auto", // Works best for mixed file types (PDF/Images)
                         folder: "resumes",
-                        format: "pdf",
-                        access_mode: "public"
                     },
                     (error, result) => {
                         if (error) {
-                            console.error("🔴 Upload Error:", error);
+                            console.error("Cloudinary Upload Error:", error);
                             reject(error);
                         } else {
-                            console.log("🟢 Upload Success (Raw Mode):", result.secure_url);
                             resolve(result);
                         }
                     }
                 );
+                // Pipe the file data to Cloudinary
                 stream.pipe(uploadStream);
             });
         }
 
-        // Update Fields
+        // --- 2. UPDATE FIELDS ---
         if (fullname) user.fullname = fullname;
         if (email) user.email = email;
         if (phoneNumber) user.phoneNumber = phoneNumber;
-<<<<<<< HEAD
-        if (bio) user.profile.bio = bio;
-        if (skills) user.profile.skills = skills.split(',');
-=======
 
         // Profile object ensure karo taaki crash na ho
         if (!user.profile) user.profile = {};
@@ -173,15 +157,16 @@ export const updateProfile = async (req, res) => {
         if (skills) {
             user.profile.skills = skills.split(',').map(skill => skill.trim());
         }
->>>>>>> e8c1ff0eccd005dd92f2ced93bd29a73dec7afdb
 
+        // --- 3. SAVE RESUME URL ---
         if (cloudResponse) {
-            user.profile.resume = cloudResponse.secure_url;
+            user.profile.resume = cloudResponse.secure_url; // This will now be a valid public URL
             user.profile.resumeOriginalName = file.originalname;
         }
 
         await user.save();
 
+        // Return updated user object
         user = {
             _id: user._id,
             fullname: user.fullname,
@@ -191,7 +176,11 @@ export const updateProfile = async (req, res) => {
             profile: user.profile,
         };
 
-        return res.status(200).json({ message: "Profile updated successfully", user, success: true });
+        return res.status(200).json({
+            message: "Profile updated successfully",
+            user,
+            success: true
+        });
 
     } catch (err) {
         console.error(err);

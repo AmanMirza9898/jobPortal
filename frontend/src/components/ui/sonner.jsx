@@ -15,7 +15,7 @@ const Toaster = ({ ...props }) => {
     <Sonner
       theme={theme}
       className="toaster group"
-      position="top-center"
+      position="bottom-right"
       closeButton={true} // Ye wo chhota wala cross icon rakhega
       icons={{
         success: <CircleCheckIcon className="size-4" />,

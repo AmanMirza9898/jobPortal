@@ -1,6 +1,9 @@
 import {Company} from "../models/company.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import cloudinary from "../utils/cloudinary.js";
+import { Readable } from "stream"; // Stream import zaroori hai
+import getDataUri from "../utils/datauri.js";
 
 export const registerCompany = async (req , res)=>{
     try{
@@ -99,9 +102,12 @@ export const updateCompany = async (req, res) => {
         const {name,description,website,location} = req.body;
         const file = req.file;
         //cloudinary logic to upload image
+        const fileUri = getDataUri(file);
+        const cloudeResponse = await cloudinary.uploader.upload(fileUri.content);
+        const logo = cloudeResponse.secure_url;
 
 
-        const updatedData = {name,description,website,location};
+        const updatedData = {name,description,website,location,logo};
         const company = await Company.findByIdAndUpdate(req.params.id, updatedData, {new:true});
         if(!company){
             return res.status(404).json({

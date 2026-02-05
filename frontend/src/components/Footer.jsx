@@ -5,7 +5,7 @@ export const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-white text-slate-600 font-sans pt-16 pb-8 border-t border-slate-200">
+    <footer className="text-slate-600 font-sans pt-16 pb-8 border-t border-slate-200">
       <div className="max-w-7xl mx-auto px-6">
 
         {/* Top Section: Main Content */}
@@ -103,7 +103,7 @@ export const Footer = () => {
         </div>
 
         {/* Job Category SEO Tag Cloud - Very important for Job Portals */}
-        <div className="bg-slate-50 p-8 rounded-xl mt-8">
+        <div className="bg-slate-100/50 backdrop-blur-sm p-8 rounded-xl mt-8">
           <p className="text-[12px] leading-relaxed text-slate-400 text-center uppercase tracking-tight">
             <span className="font-bold text-slate-600">Top Job Searches:</span> Software Engineer Jobs | Remote Jobs | Marketing Jobs in Delhi | Data Science Roles | Java Developer Jobs in Gurugram | Work From Home Jobs | Finance Manager Vacancy | HR Generalist Roles | Customer Support Jobs | Graphic Designer Jobs | Sales Executive Openings | Frontend Developer | Backend Developer | Full Stack Developer | UI/UX Designer | Product Manager | Civil Engineer | Mechanical Engineer | Teacher Jobs | Nurse Openings | Bank Jobs | Government Jobs | Part Time Jobs | Internship for Students | IT Jobs | Freshers Jobs | Jobs for Women | Recruitment in USA | Jobs in Dubai | Jobs in Canada | Jobs in Australia | Freelance Projects | Part Time Income | High Paying Jobs | Walk-in Interviews | BPO Jobs | Hospitality Jobs | Healthcare Careers | Digital Marketing Jobs | SEO Specialist Roles | Content Writer Openings | Accounting Jobs | Legal Consultant Roles | Management Trainee | Business Analyst | Project Coordinator | Quality Assurance Jobs | DevOps Engineer | Cyber Security Roles | Cloud Architect | Mobile App Developer | React Native Developer | Python Developer | PHP Developer | .NET Developer | WordPress Developer | Shopify Specialist | Data Entry Jobs | Administrative Assistant | Receptionist Jobs
           </p>

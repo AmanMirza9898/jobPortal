@@ -3,25 +3,47 @@ import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { JOB_API_END_POINT } from "@/utils/constant";
+import { APPLICATION_API_END_POINT, JOB_API_END_POINT } from "@/utils/constant";
 import { setSingleJob } from "@/redux/jobSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { toast } from "sonner";
 
 export default function JobDescription() {
-  const isApplied = false;
   const params = useParams();
   const jobId = params.id;
   const { singleJob } = useSelector((state) => state.job);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
+  const applyJobHnadler = async () => {
+    try {
+      const res = await axios.get(`${APPLICATION_API_END_POINT}/apply/${jobId}`, {
+        withCredentials: true
+      });
+      console.log(res.data);
+
+      const updatedSingleJob = { ...singleJob, applications: [...singleJob.applications, { applicant: user?._id }] }
+
+      if (res.data.success) {
+        dispatch(setSingleJob(updatedSingleJob)); // helps us to real time UI update
+        toast.success(res.data.message);
+      }
+    }
+    catch (err) {
+      console.log(err);
+      toast.error(err.response.data.message);
+    }
+  }
+
+  const isApplied = singleJob?.applications?.some(application => application.applicant === user?._id) || false;
+
   useEffect(() => {
     const fetchSingleJob = async () => {
       try {
         const res = await axios.get(`${JOB_API_END_POINT}/get/${jobId}`, { withCredentials: true });
         if (res.data.success) {
-          dispatch(setSingleJob(res.data.jobs));
+          dispatch(setSingleJob(res.data.job));
         }
       }
       catch (err) {
@@ -39,7 +61,7 @@ export default function JobDescription() {
             <div className="flex items-center gap-2 mt-4">
               <Badge className="text-blue-700 font-bold border border-gray-400">
                 {" "}
-                {singleJob?.positions} Positions
+                {singleJob?.position} Positions
               </Badge>
               <Badge className="text-[#F83002] font-bold border-gray-400">
                 {singleJob?.jobType}
@@ -51,6 +73,7 @@ export default function JobDescription() {
             </div>
           </div>
           <Button
+            onClick={isApplied ? null : applyJobHnadler}
             className={` text-white bg-black cursor-pointer ${isApplied ? "bg-gray-500 cursor-not-allowed" : ""
               }`}
           >
@@ -64,7 +87,7 @@ export default function JobDescription() {
           <h1 className="font-bold my-1">
             Role:{" "}
             <span className="pl-4 text-gray-800 font-normal">
-              {singleJob?.role}
+              {singleJob?.title}
             </span>
           </h1>
           <h1 className="font-bold my-1">
@@ -79,21 +102,21 @@ export default function JobDescription() {
           </h1>
           <h1 className="font-bold my-1">
             Experience:{" "}
-            <span className="pl-4 font-normal text-gray-800">{singleJob?.experience}</span>
+            <span className="pl-4 font-normal text-gray-800">{singleJob?.experienceLevel} Years</span>
           </h1>
           <h1 className="font-bold my-1">
             Salary:{" "}
-            <span className="pl-4 font-normal text-gray-800">{singleJob?.salary}</span>
+            <span className="pl-4 font-normal text-gray-800">{singleJob?.salary} LPA</span>
           </h1>
           <h1 className="font-bold my-1">
-            Total Applica tion:{" "}
+            Total Applicants:{" "}
             <span className="pl-4 font-normal text-gray-800">
-              {singleJob?.totalApplication}
+              {singleJob?.applications?.length || 0}
             </span>
           </h1>
           <h1 className="font-bold my-1">
             Posted Date:{" "}
-            <span className="pl-4 font-normal text-gray-800">{singleJob?.createdAt}</span>
+            <span className="pl-4 font-normal text-gray-800">{singleJob?.createdAt?.split("T")[0]}</span>
           </h1>
         </div>
       </div>

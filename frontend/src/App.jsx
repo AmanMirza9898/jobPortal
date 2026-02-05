@@ -5,9 +5,15 @@ import Login from './components/Auth/Login'
 import Signup from './components/Auth/Signup'
 import Home from './components/Home'
 import { Jobs } from "./components/Jobs"
+import { Jobs as AdminJobs } from "./components/admin/Jobs"
 import { Browse } from './components/Browse'
 import Profile from './components/Profile'
 import JobDescription from './components/JobDescription'
+import ProtectedRoute from './components/ProtectedRoute';
+import { Companies } from './components/admin/Companies'
+import { CompanyCreate } from './components/admin/CompanyCreate'
+import { CompanySetup } from './components/admin/CompanySetup'
+import PostJob from './components/admin/PostJob'
 
 const appRouter = createBrowserRouter([
   {
@@ -43,15 +49,42 @@ const appRouter = createBrowserRouter([
 
       {
         path: "/profile",
-        element: <Profile />
+        element: <ProtectedRoute role="student"><Profile /></ProtectedRoute>
       },
+
+      //admin routes
+      {
+        path: "/admin/companies",
+        element: <ProtectedRoute role="recruiter"><Companies /></ProtectedRoute>
+      },
+      {
+        path: "/admin/companies/create",
+        element: <ProtectedRoute role="recruiter"><CompanyCreate /></ProtectedRoute>
+      },
+      {
+        path: "/admin/companies/:id",
+        element: <ProtectedRoute role="recruiter"><CompanySetup /></ProtectedRoute>
+      },
+      {
+        path: "/admin/jobs",
+        element: <ProtectedRoute role="recruiter"><AdminJobs /></ProtectedRoute>
+      },
+      {
+        path: "/admin/jobs/create",
+        element: <ProtectedRoute role="recruiter"><PostJob /></ProtectedRoute>
+      }
     ]
   },
 ])
 
 function App() {
   return (
-    <RouterProvider router={appRouter} />
+    <>
+      <div className="fixed top-0 z-[-2] h-screen w-screen bg-white bg-[linear-gradient(to_right,#80808025_1px,transparent_1px),linear-gradient(to_bottom,#80808025_1px,transparent_1px)] bg-size-[60px_60px]">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]"></div>
+      </div>
+      <RouterProvider router={appRouter} />
+    </>
   )
 }
 

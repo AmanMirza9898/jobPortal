@@ -6,6 +6,7 @@ import useGetAllJobs from "@/hooks/useGetAllJobs";
 import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Lock } from "lucide-react";
+import lockGif from "@/assets/lock.gif";
 
 
 const jobsArray = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -18,16 +19,12 @@ export const Jobs = () => {
 
   if (!user) {
     return (
-      <div className="flex items-center justify-center w-full h-screen bg-gray-50">
-        <div className="flex flex-col items-center justify-center w-[400px] p-8 bg-white rounded-2xl shadow-xl border border-gray-100">
+      <div className="flex items-center justify-center w-full h-screen">
+        <div className="flex flex-col items-center justify-center w-[550px] min-h-[400px] p-8 bg-white rounded-2xl shadow-xl border border-gray-100">
 
           {/* Icon */}
           <div className="mb-6 bg-white p-3 rounded-xl shadow-sm border border-gray-100">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-900">
-              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
-              <polyline points="10 17 15 12 10 7" />
-              <line x1="15" x2="3" y1="12" y2="12" />
-            </svg>
+            <img src={lockGif} alt="lock-animation" className="w-12 h-12" />
           </div>
 
           {/* Text */}
@@ -43,9 +40,6 @@ export const Jobs = () => {
           >
             Get Started
           </Button>
-
-
-
         </div>
       </div>
     )

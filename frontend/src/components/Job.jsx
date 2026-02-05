@@ -11,7 +11,7 @@ export const Job = ({ job }) => {
   return (
     <div className="p-5 rounded-md shadow-xl bg-white border border-gray-100">
       <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-500">2 days ago</p>
+        <p className="text-sm text-gray-500">{job?.createdAt?.split("T")[0]}</p>
         <Button
           variant="outline"
           className="rounded-full hover:bg-gray-100 border border-gray-300"
@@ -24,7 +24,7 @@ export const Job = ({ job }) => {
       <div className="flex items-center gap-2 my-2 ">
         {/* <Button className=""> */}
         <Avatar className="">
-          <AvatarImage src="https://st.depositphotos.com/65872748/58884/v/450/depositphotos_588842318-stock-illustration-google-symbol-isolated-on-transparent.jpg" />
+          <AvatarImage src={job?.company?.logo} />
         </Avatar>
         {/* </Button> */}
 

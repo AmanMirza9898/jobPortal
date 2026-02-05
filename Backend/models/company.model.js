@@ -12,10 +12,10 @@ const companySchema = new mongoose.Schema(
     requirements: [{
       type: String
     }],
-      website: {
+    website: {
       type: String,
     },
-      Location: {
+    location: {
       type: String,
     },
     logo: {
@@ -23,15 +23,15 @@ const companySchema = new mongoose.Schema(
     },
 
     UserId: {
-     type:mongoose.Schema.Types.ObjectId,
-        ref:"User",
-        // required: true
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      // required: true
     },
-    
+
   },
   { timestamps: true }
 );
 
 export const Company = mongoose.model("Company", companySchema);
 
-   
+

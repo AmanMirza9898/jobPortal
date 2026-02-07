@@ -1,6 +1,9 @@
 import React from 'react';
 import { Mail, Phone, MapPin, Linkedin, Twitter, Instagram, Facebook, Search, Briefcase } from 'lucide-react';
 
+import logo from "../assets/logo.png";
+import { Link } from 'react-router-dom';
+
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
 
@@ -13,9 +16,10 @@ export const Footer = () => {
 
           {/* Brand and Mission - 5 columns wide */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="flex items-center gap-2 text-blue-600 font-bold text-2xl">
-              <Briefcase size={28} />
-              <span>Job<span className="text-slate-900">Portal</span></span>
+            <div className="flex items-center gap-2">
+              <Link to="/">
+                <img src={logo} alt="JobPortal" className="h-10 w-auto" />
+              </Link>
             </div>
             <p className="text-[15px] leading-relaxed">
               India's leading career platform helping millions of job seekers find their dream roles.

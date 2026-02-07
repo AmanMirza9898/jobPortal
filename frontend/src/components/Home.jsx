@@ -24,6 +24,7 @@ const Home = () => {
   return (
     <>
       <HeroSection />
+      <CategoryCarousel />
       {user ? (
         <LatestJobs />
       ) : (

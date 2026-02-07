@@ -43,14 +43,14 @@ const Navbar = () => {
     <>
       {/* DESKTOP NAVBAR (Floating Pill) */}
       <div className="hidden md:flex fixed top-6 left-1/2 -translate-x-1/2 z-50">
-        <div className="bg-white/80 backdrop-blur-xl border border-white/20 shadow-xl rounded-full px-6 py-3 flex items-center gap-8">
+        <div className="bg-white/80 backdrop-blur-xl border border-white/20 shadow-xl rounded-full md:px-4 lg:px-6 py-3 flex items-center md:gap-4 lg:gap-8">
           <div className="mr-4">
             <Link to="/">
-              <img src={logo} alt="JobSync" className="h-10 w-auto" />
+              <img src={logo} alt="JobSync" className="h-10 w-auto shrink-0" />
             </Link>
           </div>
 
-          <ul className="flex font-medium items-center gap-6 text-gray-600">
+          <ul className="flex font-medium items-center md:gap-4 lg:gap-6 text-gray-600">
             {
               user && user.role === 'recruiter' ? (
                 <>
@@ -70,7 +70,7 @@ const Navbar = () => {
           </ul>
 
           <div className="flex items-center gap-4">
-            <div className="pl-4 border-l border-gray-200">
+            <div className="md:pl-2 lg:pl-4 border-l border-gray-200">
               {!user ? (
                 <div className="flex items-center gap-3">
                   <Link to="/login">
@@ -93,7 +93,7 @@ const Navbar = () => {
               ) : (
                 <Popover open={open} onOpenChange={setOpen}>
                   <PopoverTrigger asChild>
-                    <Avatar className="w-10 h-10 cursor-pointer border-2 border-transparent hover:border-[#F83002] transition-all">
+                    <Avatar className="w-10 h-10 cursor-pointer border-2 border-transparent hover:border-purple-500 transition-all">
                       <AvatarImage src={user?.profile?.profilePhoto} />
                     </Avatar>
                   </PopoverTrigger>
@@ -119,7 +119,7 @@ const Navbar = () => {
                       }
 
 
-                      <button onClick={logoutHandler} className="w-full flex items-center gap-3 p-2 hover:bg-red-50 rounded-xl transition-colors text-red-600 outline-none focus:outline-none border-none">
+                      <button onClick={logoutHandler} className="w-full flex items-center gap-3 p-2 hover:bg-purple-50 rounded-xl transition-colors text-red-600 outline-none focus:outline-none border-none">
                         <div className="bg-red-100 p-2 rounded-full"><LogOut size={18} /></div>
                         <span className="font-medium">Logout</span>
                       </button>
@@ -159,7 +159,7 @@ const Navbar = () => {
             {isActive('/profile') && <span className="w-1 h-1 bg-[#6A38C2] rounded-full mt-1 animate-pulse"></span>}
           </Link>
 
-          <button onClick={user ? logoutHandler : () => navigate('/login')} className="flex flex-col items-center gap-1 hover:text-red-500 transition-colors duration-300">
+          <button onClick={user ? logoutHandler : () => navigate('/login')} className="flex flex-col items-center gap-1 hover:text-purple-500 transition-colors duration-300">
             <LogOut size={24} />
           </button>
         </div>

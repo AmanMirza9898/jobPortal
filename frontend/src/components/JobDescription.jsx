@@ -41,6 +41,7 @@ export default function JobDescription() {
   useEffect(() => {
     const fetchSingleJob = async () => {
       try {
+        window.scrollTo(0, 0); // Scroll to top when job details load
         const res = await axios.get(`${JOB_API_END_POINT}/get/${jobId}`, { withCredentials: true });
         if (res.data.success) {
           dispatch(setSingleJob(res.data.job));

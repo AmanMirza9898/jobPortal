@@ -3,8 +3,21 @@ import { Button } from "./ui/button";
 import { Search } from "lucide-react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
+import { useDispatch } from "react-redux";
+import { setSearchedQuery, setLoading } from "@/redux/jobSlice";
+import { useNavigate } from "react-router-dom";
 
 export const HeroSection = () => {
+  const [query, setQuery] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+
+  const SearchJobHandler = () => {
+    dispatch(setSearchedQuery(query));
+    dispatch(setLoading(true));
+    navigate('/browse')
+  }
   const [init, setInit] = useState(false);
 
   useEffect(() => {
@@ -165,9 +178,10 @@ export const HeroSection = () => {
           <input
             type="text"
             placeholder="Find your Dream Jobs"
+            onChange={(e) => setQuery(e.target.value)}
             className="outline-none border-none w-full text-lg text-gray-700 placeholder-gray-400"
           />
-          <Button className="rounded-r-full bg-[#6A38C2] hover:bg-[#5b30a6] h-12 px-8 transition-colors">
+          <Button onClick={SearchJobHandler} className="rounded-r-full bg-[#6A38C2] hover:bg-[#5b30a6] h-12 px-8 transition-colors">
             <Search className="h-6 w-6 text-white" />
           </Button>
         </div>

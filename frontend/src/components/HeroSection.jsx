@@ -6,6 +6,7 @@ import { loadSlim } from "@tsparticles/slim";
 import { useDispatch } from "react-redux";
 import { setSearchedQuery, setLoading } from "@/redux/jobSlice";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export const HeroSection = () => {
   const [query, setQuery] = useState("");
@@ -14,6 +15,10 @@ export const HeroSection = () => {
 
 
   const SearchJobHandler = () => {
+    if (query.trim() === "") {
+      toast.error("Please enter a keyword to search");
+      return;
+    }
     dispatch(setSearchedQuery(query));
     dispatch(setLoading(true));
     navigate('/browse')
@@ -181,8 +186,8 @@ export const HeroSection = () => {
             onChange={(e) => setQuery(e.target.value)}
             className="outline-none border-none w-full text-lg text-gray-700 placeholder-gray-400"
           />
-          <Button onClick={SearchJobHandler} className="rounded-r-full bg-[#6A38C2] hover:bg-[#5b30a6] h-12 px-8 transition-colors">
-            <Search className="h-6 w-6 text-white" />
+          <Button onClick={SearchJobHandler} className="rounded-r-full cursor-pointer bg-[#6A38C2] hover:bg-[#5b30a6] h-12 px-8 transition-colors">
+            <Search className="h-6 w-6 text-white cursor-pointer" />
           </Button>
         </div>
       </div>

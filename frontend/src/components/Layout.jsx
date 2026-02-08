@@ -1,9 +1,17 @@
 import React from 'react';
 import { Footer } from './Footer';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from "./shared/Navbar"
+import { useEffect } from 'react';
+import ScrollToTopButton from './ScrollToTopButton';
 
 const Layout = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   return (
     <div className="layout-container">
       <Navbar />
@@ -12,6 +20,7 @@ const Layout = () => {
         <Outlet />
       </main>
 
+      <ScrollToTopButton />
       <Footer />
     </div>
   );

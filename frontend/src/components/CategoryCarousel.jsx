@@ -30,20 +30,24 @@ export const CategoryCarousel = () => {
     navigate('/browse')
   }
   return (
-    <>
+    <div>
       <Carousel className="w-full max-w-xl mx-auto my-20">
         <CarouselContent>
           {category.map((cat, index) => (
-            <CarouselItem key={index} className="md:basis-1/3 lg-basis-1/3">
-              <Button onClick={() => SearchJobHandler(cat)} className="border border-gray-400 text-gray-800 rounded-full">
+            <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+              <Button
+                onClick={() => SearchJobHandler(cat)}
+                variant="outline"
+                className="rounded-full cursor-pointer bg-white border-2 border-gray-200 text-gray-600 hover:bg-[#6A38C2] hover:text-white hover:border-[#6A38C2] transition-all duration-300 ease-in-out shadow-sm hover:shadow-lg px-6 py-2 text-sm font-medium w-full"
+              >
                 {cat}
               </Button>
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        <CarouselPrevious className="hidden md:flex -left-12 hover:bg-[#6A38C2] hover:text-white border-gray-300" />
+        <CarouselNext className="hidden md:flex -right-12 hover:bg-[#6A38C2] hover:text-white border-gray-300" />
       </Carousel>
-    </>
+    </div>
   );
 };

@@ -28,15 +28,17 @@ export default function AppliedJobTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {!allAppliedJobs || allAppliedJobs.length <= 0 ? <span>No jobs applied yet</span> : allAppliedJobs.map((appliedJob) => (
-            <TableRow key={appliedJob._id} className="bg-white/60 hover:bg-white/80 transition-colors rounded-xl shadow-sm border-none group">
-              <TableCell className="font-medium text-gray-600 py-4 first:rounded-l-xl">{appliedJob.createdAt.split("T")[0]}</TableCell>
-              <TableCell className="font-medium text-gray-800">{appliedJob.job?.title}</TableCell>
-              <TableCell className="font-medium text-gray-600">{appliedJob.job?.company?.name}</TableCell>
-              <TableCell className="text-right last:rounded-r-xl">
-                <Badge className="bg-black hover:bg-gray-800 text-white transition-all transform group-hover:scale-105">{appliedJob.status}</Badge>
-              </TableCell>
-            </TableRow>
+          {!allAppliedJobs || allAppliedJobs.length <= 0 ? <span>No jobs applied yet</span> : allAppliedJobs.length > 0 && allAppliedJobs.map((appliedJob) => (
+            appliedJob.job ? (
+              <TableRow key={appliedJob._id} className="bg-white/60 hover:bg-white/80 transition-colors rounded-xl shadow-sm border-none group">
+                <TableCell className="font-medium text-gray-600 py-4 first:rounded-l-xl">{appliedJob.createdAt.split("T")[0]}</TableCell>
+                <TableCell className="font-medium text-gray-800">{appliedJob.job?.title}</TableCell>
+                <TableCell className="font-medium text-gray-600">{appliedJob.job?.company?.name}</TableCell>
+                <TableCell className="text-right last:rounded-r-xl">
+                  <Badge className={`${appliedJob?.status === "rejected" ? 'bg-red-500 hover:bg-red-600' : appliedJob.status === 'accepted' ? 'bg-green-500 hover:bg-green-600' : 'bg-gray-500 hover:bg-gray-600'} text-white transition-all transform group-hover:scale-105`}>{appliedJob.status.toUpperCase()}</Badge>
+                </TableCell>
+              </TableRow>
+            ) : null
           ))}
         </TableBody>
       </Table>

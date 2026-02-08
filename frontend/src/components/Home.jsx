@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { HeroSection } from './HeroSection'
 import { CategoryCarousel } from './CategoryCarousel'
+import { JobCategoryMarquee } from './JobCategoryMarquee'
 import { LatestJobs } from "./LatestJobs"
 import useGetAllJobs from '@/hooks/useGetAllJobs'
 import FAQ from './FAQ'
@@ -25,6 +26,7 @@ const Home = () => {
     <>
       <HeroSection />
       <CategoryCarousel />
+      <JobCategoryMarquee />
       {user ? (
         <LatestJobs />
       ) : (

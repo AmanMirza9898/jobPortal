@@ -15,6 +15,7 @@ import { CompanyCreate } from './components/admin/CompanyCreate'
 import { CompanySetup } from './components/admin/CompanySetup'
 import PostJob from './components/admin/PostJob'
 import { Applicants } from './components/admin/Applicants'
+import NotFound from './components/NotFound';
 
 
 const appRouter = createBrowserRouter([
@@ -79,6 +80,10 @@ const appRouter = createBrowserRouter([
         path: "/admin/jobs/:id/applicants",
         element: <ProtectedRoute role="recruiter"><Applicants /></ProtectedRoute>
 
+      },
+      {
+        path: "*",
+        element: <NotFound />
       }
     ]
   },

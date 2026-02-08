@@ -1,6 +1,5 @@
 import React from "react";
 import { Button } from "./ui/button";
-import { Bookmark } from "lucide-react";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Badge } from "./ui/badge";
 import { useNavigate } from "react-router-dom";
@@ -8,47 +7,58 @@ import { useNavigate } from "react-router-dom";
 export const Job = ({ job }) => {
   const navigate = useNavigate();
   const jobId = job?._id;
+
+  const daysAgoFunction = (mongodbTime) => {
+    const createdAt = new Date(mongodbTime);
+    const currentTime = new Date();
+    const timeDifference = currentTime - createdAt;
+    return Math.floor(timeDifference / (1000 * 24 * 60 * 60));
+  }
+
   return (
-    <div className="p-5 rounded-md shadow-xl bg-white border border-gray-100">
-      <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-500">{job?.createdAt?.split("T")[0]}</p>
-        <Button
-          variant="outline"
-          className="rounded-full hover:bg-gray-100 border border-gray-300"
-          size="icon"
-        >
-          <Bookmark />
-        </Button>
+    <div className="p-6 rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 bg-white border border-gray-100 cursor-pointer group">
+      <div className="flex items-center justify-between mb-4">
+        <p className="text-xs text-gray-400 font-medium">
+          {daysAgoFunction(job?.createdAt) === 0 ? "Today" : `${daysAgoFunction(job?.createdAt)} days ago`}
+        </p>
       </div>
 
-      <div className="flex items-center gap-2 my-2 ">
-        {/* <Button className=""> */}
-        <Avatar className="">
-          <AvatarImage src={job?.company?.logo} />
+      <div className="flex items-center gap-4 mb-4">
+        <Avatar className="h-12 w-12 border border-gray-100">
+          <AvatarImage src={job?.company?.logo} alt={job?.company?.name} />
         </Avatar>
-        {/* </Button> */}
-
         <div>
-          <h1 className="font-medium text-lg">{job?.company?.name}</h1>
+          <h1 className="font-semibold text-lg text-gray-900 group-hover:text-[#6A38C2] transition-colors">{job?.company?.name}</h1>
           <p className="text-sm text-gray-500">{job?.location}</p>
         </div>
       </div>
 
-      <div>
-        <h1 className="font-bold text-lg my-2">{job?.title}</h1>
-        <p className="text-sm text-gray-600">
+      <div className="mb-4">
+        <h1 className="font-bold text-xl text-gray-800 mb-2 leading-tight">{job?.title}</h1>
+        <p className="text-sm text-gray-600 line-clamp-2">
           {job?.description}
         </p>
       </div>
-      <div className="flex items-center gap-2 mt-4 ">
-        <Badge className="text-blue-700 font-bold border border-gray-400"> {job?.positions} Positions</Badge>
-        <Badge className="text-[#F83002] font-bold border-gray-400">{job?.jobType}</Badge>
-        <Badge className="text-[#7209B7] font-bold border-gray-400"> {job?.salary} LPA</Badge>
+
+      <div className="flex flex-wrap items-center gap-2 mb-6">
+        <Badge className="bg-blue-50 text-blue-700 font-bold border border-blue-100 px-3 py-1 rounded-md">
+          {job?.positions} Positions
+        </Badge>
+        <Badge className="bg-red-50 text-[#F83002] font-bold border border-red-100 px-3 py-1 rounded-md">
+          {job?.jobType}
+        </Badge>
+        <Badge className="bg-purple-50 text-[#7209B7] font-bold border border-purple-100 px-3 py-1 rounded-md">
+          {job?.salary} LPA
+        </Badge>
       </div>
 
-      <div className="mt-4 gap-4 flex item-center">
-        <Button onClick={() => navigate(`/description/${jobId}`)} className="border border-gray-400 rounded-full cursor-pointer">Details</Button>
-        <Button className="border border-gray-400 rounded-full cursor-pointer bg-[#7209B7] hover:bg-[#60099a] text-white">Save For Later</Button>
+      <div>
+        <Button
+          onClick={() => navigate(`/description/${jobId}`)}
+          className="w-full bg-white border border-gray-300 text-gray-700 hover:bg-[#6A38C2] hover:text-white hover:border-[#6A38C2] transition-colors font-medium rounded-lg h-10"
+        >
+          View Details
+        </Button>
       </div>
     </div>
   );

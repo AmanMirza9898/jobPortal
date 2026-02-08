@@ -4,7 +4,7 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { RadioGroup } from "../ui/radio-group";
 import { Button } from "../ui/button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
 import { USER_API_END_POINT } from "@/utils/constant";
@@ -23,6 +23,7 @@ const Login = () => {
 
   const { loading } = useSelector(store => store.auth);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const dispatch = useDispatch();
 
@@ -42,7 +43,11 @@ const Login = () => {
       });
       if (res.data.success) {
         dispatch(setUser(res.data.user));
-        navigate("/");
+
+        // Redirect logic
+        const from = location.state?.from || "/";
+        navigate(from, { replace: true });
+
         toast.success(res.data.message);
       }
     } catch (error) {

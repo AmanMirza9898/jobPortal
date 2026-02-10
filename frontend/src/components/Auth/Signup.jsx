@@ -33,7 +33,14 @@ const Signup = () => {
   };
 
   const changeFileHandler = (e) => {
-    setInput({ ...input, file: e.target.files?.[0] });
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 1024 * 1024) { // 1MB limit
+        toast.error("File size must be less than 1MB");
+        return;
+      }
+      setInput({ ...input, file });
+    }
   };
 
   const submitHandler = async (e) => {
@@ -79,7 +86,7 @@ const Signup = () => {
 
   return (
     <div className="h-full">
-      <div className="flex h-[calc(100vh-120px)] md:h-[calc(100vh-150px)] overflow-hidden">
+      <div className="flex flex-col md:flex-row h-auto md:h-[calc(100vh-150px)] overflow-hidden">
         {/* Left Side - Image */}
         <div className="hidden md:flex w-1/2 h-full items-center justify-center relative">
           <img
@@ -90,52 +97,52 @@ const Signup = () => {
         </div>
 
         {/* Right Side - Form */}
-        <div className="w-full md:w-1/2 flex flex-col p-4 md:p-8 overflow-y-auto h-full items-center">
-          <div className="w-full max-w-md bg-white/80 backdrop-blur-xl p-8 md:p-10 rounded-3xl border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.1)] transition-all">
+        <div className="w-full md:w-1/2 flex flex-col p-4 md:p-8 h-auto md:h-full md:overflow-y-auto items-center justify-center md:block">
+          <div className="w-full max-w-md bg-white dark:bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-white/20 dark:border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.1)] transition-all">
             <form onSubmit={submitHandler} className="space-y-4">
               <div className="text-center mb-4">
-                <h1 className="font-bold text-3xl mb-2 text-gray-900">Create Account</h1>
-                <p className="text-gray-500 text-sm">Join us to find your dream job</p>
+                <h1 className="font-bold text-3xl mb-2 text-gray-900 dark:text-gray-100">Create Account</h1>
+                <p className="text-gray-500 dark:text-gray-400 text-sm">Join us to find your dream job</p>
               </div>
 
               <div>
-                <Label className="block text-sm font-semibold text-gray-800 mb-1.5 ml-1">Full Name</Label>
+                <Label className="block text-sm font-semibold text-gray-800 dark:text-gray-300 mb-1.5 ml-1">Full Name</Label>
                 <Input
                   type="text"
                   value={input.fullname}
                   name="fullname"
                   onChange={changeEventHandler}
                   placeholder="Enter your full name"
-                  className="w-full px-4 py-2.5 rounded-2xl border border-gray-200 bg-white/50 focus:border-black focus:ring-0 outline-none transition-all shadow-sm"
+                  className="w-full px-4 py-2.5 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-neutral-900 dark:text-gray-100 focus:border-black dark:focus:border-white focus:ring-0 outline-none transition-all shadow-sm"
                 />
               </div>
 
               <div>
-                <Label className="block text-sm font-semibold text-gray-800 mb-1.5 ml-1">Email</Label>
+                <Label className="block text-sm font-semibold text-gray-800 dark:text-gray-300 mb-1.5 ml-1">Email</Label>
                 <Input
                   type="email"
                   value={input.email}
                   name="email"
                   onChange={changeEventHandler}
                   placeholder="Enter your email"
-                  className="w-full px-4 py-2.5 rounded-2xl border border-gray-200 bg-white/50 focus:border-black focus:ring-0 outline-none transition-all shadow-sm"
+                  className="w-full px-4 py-2.5 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-neutral-900 dark:text-gray-100 focus:border-black dark:focus:border-white focus:ring-0 outline-none transition-all shadow-sm"
                 />
               </div>
 
               <div>
-                <Label className="block text-sm font-semibold text-gray-800 mb-1.5 ml-1">Phone Number</Label>
+                <Label className="block text-sm font-semibold text-gray-800 dark:text-gray-300 mb-1.5 ml-1">Phone Number</Label>
                 <Input
                   type="number"
                   value={input.phoneNumber}
                   name="phoneNumber"
                   onChange={changeEventHandler}
                   placeholder="Enter your phone number"
-                  className="w-full px-4 py-2.5 rounded-2xl border border-gray-200 bg-white/50 focus:border-black focus:ring-0 outline-none transition-all shadow-sm"
+                  className="w-full px-4 py-2.5 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-neutral-900 dark:text-gray-100 focus:border-black dark:focus:border-white focus:ring-0 outline-none transition-all shadow-sm"
                 />
               </div>
 
               <div>
-                <Label className="block text-sm font-semibold text-gray-800 mb-1.5 ml-1">Password</Label>
+                <Label className="block text-sm font-semibold text-gray-800 dark:text-gray-300 mb-1.5 ml-1">Password</Label>
                 <div className="relative">
                   <Input
                     type={showPassword ? "text" : "password"}
@@ -143,7 +150,7 @@ const Signup = () => {
                     name="password"
                     onChange={changeEventHandler}
                     placeholder="Create a password"
-                    className="w-full px-4 py-2.5 rounded-2xl border border-gray-200 bg-white/50 focus:border-black focus:ring-0 outline-none transition-all shadow-sm pr-12"
+                    className="w-full px-4 py-2.5 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-neutral-900 dark:text-gray-100 focus:border-black dark:focus:border-white focus:ring-0 outline-none transition-all shadow-sm pr-12"
                   />
                   <button
                     type="button"
@@ -156,9 +163,9 @@ const Signup = () => {
               </div>
 
               <div>
-                <Label className="block text-sm font-semibold text-gray-800 mb-2.5 ml-1">I am a...</Label>
+                <Label className="block text-sm font-semibold text-gray-800 dark:text-gray-300 mb-2.5 ml-1">I am a...</Label>
                 <div className="grid grid-cols-2 gap-3">
-                  <div className={`flex items-center space-x-3 border ${input.role === 'student' ? 'border-black bg-white' : 'border-gray-200 bg-white/50'} rounded-2xl p-3 cursor-pointer hover:border-black transition-all shadow-sm`}>
+                  <div className={`flex items-center space-x-3 border ${input.role === 'student' ? 'border-black dark:border-white bg-white dark:bg-neutral-800' : 'border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-neutral-900'} rounded-2xl p-3 cursor-pointer hover:border-black dark:hover:border-white transition-all shadow-sm`}>
                     <input
                       type="radio"
                       name="role"
@@ -166,11 +173,11 @@ const Signup = () => {
                       id="r1"
                       checked={input.role === "student"}
                       onChange={changeEventHandler}
-                      className="w-4 h-4 accent-black cursor-pointer"
+                      className="w-4 h-4 accent-black dark:accent-white cursor-pointer"
                     />
-                    <Label htmlFor="r1" className="cursor-pointer font-medium text-gray-700 flex-1">Student</Label>
+                    <Label htmlFor="r1" className="cursor-pointer font-medium text-gray-700 dark:text-gray-200 flex-1">Student</Label>
                   </div>
-                  <div className={`flex items-center space-x-3 border ${input.role === 'recruiter' ? 'border-black bg-white' : 'border-gray-200 bg-white/50'} rounded-2xl p-3 cursor-pointer hover:border-black transition-all shadow-sm`}>
+                  <div className={`flex items-center space-x-3 border ${input.role === 'recruiter' ? 'border-black dark:border-white bg-white dark:bg-neutral-800' : 'border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-neutral-900'} rounded-2xl p-3 cursor-pointer hover:border-black dark:hover:border-white transition-all shadow-sm`}>
                     <input
                       type="radio"
                       name="role"
@@ -178,20 +185,20 @@ const Signup = () => {
                       id="r2"
                       checked={input.role === "recruiter"}
                       onChange={changeEventHandler}
-                      className="w-4 h-4 accent-black cursor-pointer"
+                      className="w-4 h-4 accent-black dark:accent-white cursor-pointer"
                     />
-                    <Label htmlFor="r2" className="cursor-pointer font-medium text-gray-700 flex-1">Recruiter</Label>
+                    <Label htmlFor="r2" className="cursor-pointer font-medium text-gray-700 dark:text-gray-200 flex-1">Recruiter</Label>
                   </div>
                 </div>
               </div>
 
               <div>
-                <Label className="block text-sm font-semibold text-gray-800 mb-1.5 ml-1">Profile Picture</Label>
+                <Label className="block text-sm font-semibold text-gray-800 dark:text-gray-300 mb-1.5 ml-1">Profile Picture</Label>
                 <Input
                   accept="image/*"
                   type="file"
                   onChange={changeFileHandler}
-                  className="w-full px-3 py-1.5 rounded-2xl border border-gray-200 bg-white/50 cursor-pointer text-sm file:mr-4 file:py-1.5 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-black file:text-white hover:file:bg-gray-800 transition-all shadow-sm"
+                  className="w-full px-3 py-1.5 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-neutral-900 cursor-pointer text-sm file:mr-4 file:py-1.5 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-black dark:file:bg-white file:text-white dark:file:text-black hover:file:bg-gray-800 dark:hover:file:bg-gray-200 transition-all shadow-sm dark:text-gray-300"
                 />
               </div>
 
@@ -204,7 +211,7 @@ const Signup = () => {
                 ) : (
                   <Button
                     type="submit"
-                    className="w-full py-3 rounded-xl bg-black hover:bg-gray-800 text-white text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="w-full py-3 rounded-xl bg-black dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-black text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300"
                   >
                     Create Account
                   </Button>

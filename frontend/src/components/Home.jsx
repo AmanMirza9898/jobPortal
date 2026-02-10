@@ -9,10 +9,6 @@ import FAQ from './FAQ'
 import { useNavigate } from 'react-router-dom'
 
 
-
-
-
-
 const Home = () => {
   useGetAllJobs();
   const { user } = useSelector(store => store.auth);
@@ -30,12 +26,12 @@ const Home = () => {
       {user ? (
         <LatestJobs />
       ) : (
-        <div className="py-20 text-center">
-          <div className="max-w-xl mx-auto p-8 bg-white rounded-2xl shadow-sm border border-gray-100">
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+        <div className="py-20 text-center px-4 sm:px-0">
+          <div className="max-w-xl mx-auto p-8 bg-gradient-to-br from-purple-50 via-white to-purple-50 dark:bg-none dark:bg-white/5 backdrop-blur-md rounded-2xl shadow-xl border border-gray-200 dark:border-white/10 transition-all duration-300">
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
               Explore Latest Jobs
             </h2>
-            <p className="text-gray-500 mb-6">
+            <p className="text-gray-500 dark:text-gray-300 mb-6">
               Please login to view the latest job openings tailored just for you.
             </p>
           </div>

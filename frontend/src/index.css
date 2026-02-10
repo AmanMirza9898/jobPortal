@@ -1,8 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
+@variant dark (&:where(.dark, .dark *));
 
 :root {
   transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  font-family: "Inter", sans-serif;
 }
 
 html {
@@ -11,6 +14,7 @@ html {
 
 body {
   transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  font-family: "Inter", sans-serif;
 }
 
 
@@ -56,6 +60,25 @@ body {
     animation: float 3s ease-in-out infinite;
     animation-delay: 2s;
   }
+
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient 6s ease infinite;
+  }
 }
 
 /* Force right-to-left slide for Sonner - Global Scope */
@@ -89,4 +112,24 @@ li[data-sonner-toast][data-state="open"] {
 
 li[data-sonner-toast][data-state="closed"] {
   animation: slideOutToRight 0.2s ease-in forwards !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #A88BDE;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5b30a6;
 }

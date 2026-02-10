@@ -39,6 +39,46 @@ export const PostJob = async (req, res) => {
     }
 }
 
+export const updateJob = async (req, res) => {
+    try {
+        const { title, description, requirements, salary, location, jobType, experience, position, companyId } = req.body;
+        const jobId = req.params.id;
+
+        const updatedData = {
+            title,
+            description,
+            requirements: requirements ? requirements.split(",") : undefined,
+            salary: Number(salary),
+            location,
+            jobType,
+            experienceLevel: Number(experience),
+            position: Number(position),
+            company: companyId
+        };
+
+        const job = await Job.findByIdAndUpdate(jobId, updatedData, { new: true });
+
+        if (!job) {
+            return res.status(404).json({
+                message: "Job not found.",
+                success: false
+            })
+        }
+
+        return res.status(200).json({
+            message: "Job updated successfully.",
+            job,
+            success: true
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: "Internal server error.",
+            success: false
+        })
+    }
+}
+
 // studen ke liye
 export const getAllJobs = async (req, res) => {
     try {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { LatesJobCards } from "./LatesJobCards";
-import { FilterCard } from "./filterCard";
+import { FilterCard } from "./FilterCard";
 import { useSelector } from "react-redux";
 import useGetAllJobs from "@/hooks/useGetAllJobs";
 import { useNavigate, useLocation } from "react-router-dom";

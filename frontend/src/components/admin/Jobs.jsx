@@ -22,7 +22,7 @@ export const Jobs = () => {
         <>
 
             <div>
-                <div className='  max-w-6xl mx-auto my-10'>
+                <div className='max-w-6xl mx-auto px-4 mt-4 md:mt-10 mb-10'>
                     <div className='flex items-center justify-between my-5'>
                         <Input
                             className='w-fit'

@@ -6,7 +6,7 @@ export const PostJob = async (req, res) => {
     try {
         const { title, description, requirements, salary, location, jobType, experience, position, companyId } = req.body;
         const userId = req.id;
-        if (!title || !description || !requirements || !salary || !location || !jobType || !experience || !position || !companyId) {
+        if (!title || !description || !salary || !location || !jobType || !experience || !position || !companyId) {
             return res.status(400).json({
                 message: "Somthing is missing",
                 success: false
@@ -34,6 +34,46 @@ export const PostJob = async (req, res) => {
         console.log("PostJob Error Details:", err);
         return res.status(400).json({
             message: err.message || "Internal server error",
+            success: false
+        })
+    }
+}
+
+export const updateJob = async (req, res) => {
+    try {
+        const { title, description, requirements, salary, location, jobType, experience, position, companyId } = req.body;
+        const jobId = req.params.id;
+
+        const updatedData = {
+            title,
+            description,
+            requirements: requirements ? requirements.split(",") : undefined,
+            salary: Number(salary),
+            location,
+            jobType,
+            experienceLevel: Number(experience),
+            position: Number(position),
+            company: companyId
+        };
+
+        const job = await Job.findByIdAndUpdate(jobId, updatedData, { new: true });
+
+        if (!job) {
+            return res.status(404).json({
+                message: "Job not found.",
+                success: false
+            })
+        }
+
+        return res.status(200).json({
+            message: "Job updated successfully.",
+            job,
+            success: true
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: "Internal server error.",
             success: false
         })
     }
@@ -131,6 +171,31 @@ export const getAdminJob = async (req, res) => {
         console.log(err);
         return res.status(500).json({
             message: "Internal server error",
+            success: false
+        })
+    }
+}
+
+export const deleteJob = async (req, res) => {
+    try {
+        const jobId = req.params.id;
+        const job = await Job.findByIdAndDelete(jobId);
+
+        if (!job) {
+            return res.status(404).json({
+                message: "Job not found.",
+                success: false
+            })
+        }
+
+        return res.status(200).json({
+            message: "Job deleted successfully.",
+            success: true
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: "Internal server error.",
             success: false
         })
     }

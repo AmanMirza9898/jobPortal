@@ -14,7 +14,9 @@ import { Companies } from './components/admin/Companies'
 import { CompanyCreate } from './components/admin/CompanyCreate'
 import { CompanySetup } from './components/admin/CompanySetup'
 import PostJob from './components/admin/PostJob'
+import EditJob from './components/admin/EditJob'
 import { Applicants } from './components/admin/Applicants'
+import AdminProfile from './components/admin/AdminProfile'
 import NotFound from './components/NotFound';
 
 
@@ -54,6 +56,10 @@ const appRouter = createBrowserRouter([
         path: "/profile",
         element: <ProtectedRoute role="student"><Profile /></ProtectedRoute>
       },
+      {
+        path: "/admin/profile",
+        element: <ProtectedRoute role="recruiter"><AdminProfile /></ProtectedRoute>
+      },
 
       //admin routes
       {
@@ -77,6 +83,10 @@ const appRouter = createBrowserRouter([
         element: <ProtectedRoute role="recruiter"><PostJob /></ProtectedRoute>
       },
       {
+        path: "/admin/jobs/:id",
+        element: <ProtectedRoute role="recruiter"><EditJob /></ProtectedRoute>
+      },
+      {
         path: "/admin/jobs/:id/applicants",
         element: <ProtectedRoute role="recruiter"><Applicants /></ProtectedRoute>
 
@@ -92,8 +102,8 @@ const appRouter = createBrowserRouter([
 function App() {
   return (
     <>
-      <div className="fixed top-0 z-[-2] h-screen w-screen bg-white bg-[linear-gradient(to_right,#80808025_1px,transparent_1px),linear-gradient(to_bottom,#80808025_1px,transparent_1px)] bg-size-[60px_60px]">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]"></div>
+      <div className="fixed top-0 z-[-2] h-screen w-screen bg-white dark:bg-neutral-950 bg-[linear-gradient(to_right,#80808025_1px,transparent_1px),linear-gradient(to_bottom,#80808025_1px,transparent_1px)] bg-size-[60px_60px]">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))] dark:bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(0,0,0,0))]"></div>
       </div>
       <RouterProvider router={appRouter} />
     </>

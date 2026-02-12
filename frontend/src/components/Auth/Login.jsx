@@ -72,29 +72,29 @@ const Login = () => {
         </div>
 
         {/* Right Side - Form */}
-        <div className="w-full md:w-1/2 flex flex-col p-4 md:p-8 overflow-y-auto h-full items-center">
-          <div className="w-full max-w-md bg-white/80 backdrop-blur-xl p-8 md:p-10 rounded-3xl border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.1)] transition-all my-auto">
+        <div className="w-full md:w-1/2 flex flex-col p-4 md:p-8 h-full items-center justify-center">
+          <div className="w-full max-w-md bg-white dark:bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-white/20 dark:border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.1)] transition-all">
             <form onSubmit={submitHandler} className="space-y-4">
               <div className="text-center mb-6">
-                <h1 className="font-bold text-3xl mb-2 text-gray-900">Login</h1>
-                <p className="text-gray-500">Welcome back! Please enter your details.</p>
+                <h1 className="font-bold text-3xl mb-2 text-gray-900 dark:text-gray-100">Login</h1>
+                <p className="text-gray-500 dark:text-gray-400">Welcome back! Please enter your details.</p>
               </div>
 
               <div className="space-y-3">
                 <div>
-                  <Label className="block text-sm font-medium text-gray-700 mb-1">Email</Label>
+                  <Label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</Label>
                   <Input
                     type="email"
                     value={input.email}
                     name="email"
                     onChange={changeEventHandler}
                     placeholder="Enter your email"
-                    className="w-full px-3 py-2 rounded-xl border border-gray-200 focus:border-black focus:ring-1 focus:ring-black outline-none transition-all"
+                    className="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-neutral-900 dark:text-gray-100 focus:border-black dark:focus:border-white focus:ring-1 focus:ring-black dark:focus:ring-white outline-none transition-all"
                   />
                 </div>
 
                 <div>
-                  <Label className="block text-sm font-medium text-gray-700 mb-1">Password</Label>
+                  <Label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</Label>
                   <div className="relative">
                     <Input
                       type={showPassword ? "text" : "password"}
@@ -102,7 +102,7 @@ const Login = () => {
                       name="password"
                       onChange={changeEventHandler}
                       placeholder="Enter your password"
-                      className="w-full px-3 py-2 rounded-xl border border-gray-200 focus:border-black focus:ring-1 focus:ring-black outline-none transition-all pr-10"
+                      className="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-neutral-900 dark:text-gray-100 focus:border-black dark:focus:border-white focus:ring-1 focus:ring-black dark:focus:ring-white outline-none transition-all pr-10"
                     />
                     <button
                       type="button"
@@ -115,9 +115,9 @@ const Login = () => {
                 </div>
 
                 <div className="pt-2">
-                  <Label className="block text-sm font-medium text-gray-700 mb-3">I am a...</Label>
+                  <Label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">I am a...</Label>
                   <RadioGroup defaultValue="student" className="grid grid-cols-2 gap-4">
-                    <div className="flex items-center space-x-2 border border-gray-200 rounded-xl p-2 cursor-pointer hover:border-black transition-colors">
+                    <div className="flex items-center space-x-2 border border-gray-200 dark:border-gray-700 rounded-xl p-2 cursor-pointer hover:border-black dark:hover:border-white transition-colors">
                       <input
                         type="radio"
                         name="role"
@@ -125,11 +125,11 @@ const Login = () => {
                         id="r1"
                         checked={input.role === 'student'}
                         onChange={changeEventHandler}
-                        className="cursor-pointer"
+                        className="cursor-pointer dark:bg-neutral-900"
                       />
-                      <Label htmlFor="r1" className="cursor-pointer flex-1 text-sm">Student</Label>
+                      <Label htmlFor="r1" className="cursor-pointer flex-1 text-sm dark:text-gray-300">Student</Label>
                     </div>
-                    <div className="flex items-center space-x-2 border border-gray-200 rounded-xl p-2 cursor-pointer hover:border-black transition-colors">
+                    <div className="flex items-center space-x-2 border border-gray-200 dark:border-gray-700 rounded-xl p-2 cursor-pointer hover:border-black dark:hover:border-white transition-colors">
                       <input
                         type="radio"
                         name="role"
@@ -137,9 +137,9 @@ const Login = () => {
                         id="r2"
                         checked={input.role === 'recruiter'}
                         onChange={changeEventHandler}
-                        className="cursor-pointer"
+                        className="cursor-pointer dark:bg-neutral-900"
                       />
-                      <Label htmlFor="r2" className="cursor-pointer flex-1 text-sm">Recruiter</Label>
+                      <Label htmlFor="r2" className="cursor-pointer flex-1 text-sm dark:text-gray-300">Recruiter</Label>
                     </div>
                   </RadioGroup>
                 </div>
@@ -151,7 +151,7 @@ const Login = () => {
                 ) : (
                   <Button
                     type="submit"
-                    className="w-full py-3 rounded-xl bg-black hover:bg-gray-800 text-white text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="w-full py-3 rounded-xl bg-black dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-black text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300"
                   >
                     Login
                   </Button>

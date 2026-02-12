@@ -24,7 +24,7 @@ export const Applicants = () => {
   }, []);
   return (
     <div>
-      <div className='max-w-7xl mx-auto'>
+      <div className='max-w-7xl mx-auto px-4'>
         <h1 className='font-bold text-xl my-5'>Applicants ({applications?.length})</h1>
         <ApplicantsTable />
       </div>

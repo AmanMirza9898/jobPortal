@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
+import { Avatar, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { Loader2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,7 +22,8 @@ export default function UpdateProfileDialog({ open, setOpen }) {
     phoneNumber: "",
     bio: "",
     skills: "",
-    file: null
+    file: null, // This is for Resume
+    profilePhoto: null // This is for Profile Picture
   });
 
   // Sync state with User data whenever the modal opens or user data changes
@@ -34,7 +36,8 @@ export default function UpdateProfileDialog({ open, setOpen }) {
         bio: user.profile?.bio || "",
         // Convert array to comma-separated string for editing (e.g., "HTML, CSS")
         skills: user.profile?.skills?.map(skill => skill).join(", ") || "",
-        file: null // Always reset file input on open
+        file: null, // Always reset resume input on open
+        profilePhoto: null // Always reset photo input on open
       });
     }
   }, [user, open]);
@@ -45,7 +48,24 @@ export default function UpdateProfileDialog({ open, setOpen }) {
 
   const fileChangeHandler = (e) => {
     const file = e.target.files?.[0];
-    setInput({ ...input, file });
+    if (file) {
+      if (file.size > 1024 * 1024) { // 1MB limit
+        toast.error("File size must be less than 1MB");
+        return;
+      }
+      setInput({ ...input, file });
+    }
+  };
+
+  const photoChangeHandler = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 1024 * 1024) { // 1MB limit
+        toast.error("Image size must be less than 1MB");
+        return;
+      }
+      setInput({ ...input, profilePhoto: file });
+    }
   };
 
   const submitHandler = async (e) => {
@@ -61,6 +81,9 @@ export default function UpdateProfileDialog({ open, setOpen }) {
 
     if (input.file) {
       formData.append("file", input.file);
+    }
+    if (input.profilePhoto) {
+      formData.append("profilePhoto", input.profilePhoto);
     }
 
     try {
@@ -89,102 +112,129 @@ export default function UpdateProfileDialog({ open, setOpen }) {
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent
-          className="bg-white sm:max-w-[425px] border-none"
+          className="bg-white dark:bg-neutral-900 sm:max-w-[600px] rounded-3xl p-8 border-none shadow-2xl"
           onOpenAutoFocus={(e) => e.preventDefault()}
         >
-          <DialogHeader>
-            <DialogTitle>Update Profile</DialogTitle>
+          <DialogHeader className="mb-6">
+            <DialogTitle className="text-2xl font-bold text-center text-gray-900 dark:text-gray-100">Update Profile</DialogTitle>
           </DialogHeader>
           <form onSubmit={submitHandler}>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">Name</Label>
-                <Input
-                  id="name"
-                  name="fullname"
-                  onChange={changeEventHandler}
-                  value={input.fullname}
-                  type="text"
-                  placeholder="Full Name"
-                  className="col-span-3"
-                />
+            <div className="grid gap-6">
+
+              {/* Row 1: Name & Email */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="fullname" className="text-gray-600 dark:text-gray-400 font-medium">Name</Label>
+                  <Input
+                    id="fullname"
+                    name="fullname"
+                    onChange={changeEventHandler}
+                    value={input.fullname}
+                    type="text"
+                    className="h-11 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 focus:border-[#6A38C2] focus:ring-1 focus:ring-[#6A38C2]"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-gray-600 dark:text-gray-400 font-medium">Email</Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    onChange={changeEventHandler}
+                    value={input.email}
+                    className="h-11 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 focus:border-[#6A38C2] focus:ring-1 focus:ring-[#6A38C2]"
+                  />
+                </div>
               </div>
 
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="email" className="text-right">Email</Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  onChange={changeEventHandler}
-                  value={input.email}
-                  placeholder="example@example.com"
-                  className="col-span-3"
-                />
+              {/* Row 2: Phone & Bio */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="phoneNumber" className="text-gray-600 dark:text-gray-400 font-medium">Phone Number</Label>
+                  <Input
+                    id="phoneNumber"
+                    value={input.phoneNumber}
+                    onChange={changeEventHandler}
+                    name="phoneNumber"
+                    className="h-11 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 focus:border-[#6A38C2] focus:ring-1 focus:ring-[#6A38C2]"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="bio" className="text-gray-600 dark:text-gray-400 font-medium">Bio</Label>
+                  <Input
+                    id="bio"
+                    value={input.bio}
+                    onChange={changeEventHandler}
+                    name="bio"
+                    className="h-11 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 focus:border-[#6A38C2] focus:ring-1 focus:ring-[#6A38C2]"
+                  />
+                </div>
               </div>
 
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="number" className="text-right">Number</Label>
-                <Input
-                  id="number"
-                  value={input.phoneNumber}
-                  onChange={changeEventHandler}
-                  name="phoneNumber"
-                  placeholder="981126XXXX"
-                  className="col-span-3"
-                />
+              {/* Row 3: Skills (Full Width - Only for Students) */}
+              {user?.role === 'student' && (
+                <div className="space-y-2">
+                  <Label htmlFor="skills" className="text-gray-600 dark:text-gray-400 font-medium">Skills</Label>
+                  <Input
+                    id="skills"
+                    name="skills"
+                    value={input.skills}
+                    onChange={changeEventHandler}
+                    className="h-11 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 focus:border-[#6A38C2] focus:ring-1 focus:ring-[#6A38C2]"
+                  />
+                </div>
+              )}
+
+              {/* Row 4: Resume & Profile Picture */}
+              <div className={`grid grid-cols-1 ${user?.role === 'student' ? 'md:grid-cols-2' : ''} gap-4`}>
+                {user?.role === 'student' && (
+                  <div className="space-y-2">
+                    <Label htmlFor="file" className="text-gray-600 dark:text-gray-400 font-medium">Resume (PDF)</Label>
+                    <Input
+                      id="file"
+                      name="file"
+                      type="file"
+                      accept="application/pdf"
+                      onChange={fileChangeHandler}
+                      className="h-11 p-2 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 file:bg-[#6A38C2] file:text-white file:border-none file:rounded-lg file:mr-4 file:px-4 file:py-1 hover:file:bg-[#5b30a6] cursor-pointer"
+                    />
+                  </div>
+                )}
+                <div className="space-y-2">
+                  <Label htmlFor="profilePhoto" className="text-gray-600 dark:text-gray-400 font-medium">Profile Picture</Label>
+                  <div className="flex items-center gap-4">
+                    <Avatar className="h-12 w-12 border-2 border-gray-100 dark:border-gray-800">
+                      <AvatarImage
+                        src={input.profilePhoto ? URL.createObjectURL(input.profilePhoto) : user?.profile?.profilePhoto}
+                        className="object-cover"
+                      />
+                    </Avatar>
+                    <Input
+                      id="profilePhoto"
+                      name="profilePhoto"
+                      type="file"
+                      accept="image/*"
+                      onChange={photoChangeHandler}
+                      className="flex-1 h-11 p-2 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 file:bg-[#6A38C2] file:text-white file:border-none file:rounded-lg file:mr-4 file:px-4 file:py-1 hover:file:bg-[#5b30a6] cursor-pointer"
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="bio" className="text-right">Bio</Label>
-                <Input
-                  id="bio"
-                  value={input.bio}
-                  onChange={changeEventHandler}
-                  name="bio"
-                  placeholder="Bio"
-                  className="col-span-3"
-                />
-              </div>
-
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="skills" className="text-right">Skills</Label>
-                <Input
-                  id="skills"
-                  name="skills"
-                  value={input.skills}
-                  placeholder="React, Node.js, Express"
-                  onChange={changeEventHandler}
-                  className="col-span-3"
-                />
-              </div>
-
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="file" className="text-right">Resume</Label>
-                <Input
-                  id="file"
-                  name="file"
-                  type="file"
-
-                  accept="application/pdf"
-                  onChange={fileChangeHandler}
-                  className="col-span-3"
-                // Removed value={input.file} -> This is critical
-                />
-              </div>
             </div>
-            <DialogFooter>
+
+            <DialogFooter className="mt-8">
               {loading ? (
-                <Button className="w-full my-4" disabled>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Please wait
+                <Button className="w-full h-12 rounded-xl bg-[#6A38C2] text-white opacity-100 disabled:opacity-100 cursor-not-allowed" disabled>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  Updating...
                 </Button>
               ) : (
                 <Button
                   type="submit"
-                  className="py-5 w-full my-4 border cursor-pointer text-white bg-black hover:bg-[#262626]"
+                  className="w-full h-12 rounded-xl bg-[#6A38C2] hover:bg-[#5b30a6] text-white font-semibold shadow-lg transition-all hover:shadow-xl hover:-translate-y-0.5"
                 >
-                  Update
+                  Save Changes
                 </Button>
               )}
             </DialogFooter>

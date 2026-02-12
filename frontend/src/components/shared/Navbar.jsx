@@ -112,8 +112,8 @@ const Navbar = () => {
                     <div className="space-y-2">
 
                       {
-                        user && user.role === 'student' && (
-                          <Link to="/profile" onClick={() => setOpen(false)} className="flex items-center gap-3 p-2 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl transition-colors text-gray-700 dark:text-gray-200 outline-none focus:outline-none border-none">
+                        user && (
+                          <Link to={user.role === 'recruiter' ? "/admin/profile" : "/profile"} onClick={() => setOpen(false)} className="flex items-center gap-3 p-2 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl transition-colors text-gray-700 dark:text-gray-200 outline-none focus:outline-none border-none">
                             <div className="bg-gray-100 dark:bg-gray-700 p-2 rounded-full"><User2 size={18} /></div>
                             <span className="font-medium">View Profile</span>
                           </Link>
@@ -140,59 +140,66 @@ const Navbar = () => {
           {
             user && user.role === 'recruiter' ? (
               <>
-                <Link to="/admin/companies" className={`flex flex-col items-center gap-1 transition-all duration-300 ${isActive('/admin/companies') ? 'text-[#6A38C2] scale-110' : 'hover:text-[#6A38C2]'}`}>
-                  <Building2 size={24} strokeWidth={isActive('/admin/companies') ? 3 : 2} />
-                  {isActive('/admin/companies') && <span className="w-1 h-1 bg-[#6A38C2] rounded-full mt-1 animate-pulse"></span>}
+                <Link to="/admin/companies" className={`flex flex-col items-center justify-center transition-all duration-300 ${isActive('/admin/companies') ? 'text-[#6A38C2] scale-105' : 'text-gray-500 dark:text-gray-400 hover:text-[#6A38C2]'}`}>
+                  <Building2 size={22} strokeWidth={isActive('/admin/companies') ? 2.5 : 2} />
+                  <span className={`text-[10px] mt-1 font-bold tracking-tight ${isActive('/admin/companies') ? 'text-[#6A38C2]' : ''}`}>Companies</span>
                 </Link>
 
-                <Link to="/admin/jobs" className={`flex flex-col items-center gap-1 transition-all duration-300 ${isActive('/admin/jobs') ? 'text-[#6A38C2] scale-110' : 'hover:text-[#6A38C2]'}`}>
-                  <Briefcase size={24} strokeWidth={isActive('/admin/jobs') ? 3 : 2} />
-                  {isActive('/admin/jobs') && <span className="w-1 h-1 bg-[#6A38C2] rounded-full mt-1 animate-pulse"></span>}
+                <Link to="/admin/jobs" className={`flex flex-col items-center justify-center transition-all duration-300 ${isActive('/admin/jobs') ? 'text-[#6A38C2] scale-105' : 'text-gray-500 dark:text-gray-400 hover:text-[#6A38C2]'}`}>
+                  <Briefcase size={22} strokeWidth={isActive('/admin/jobs') ? 2.5 : 2} />
+                  <span className={`text-[10px] mt-1 font-bold tracking-tight ${isActive('/admin/jobs') ? 'text-[#6A38C2]' : ''}`}>Jobs</span>
                 </Link>
 
-                {/* Central Floating Action Button for Post Job */}
-                <div className="relative -top-8">
+                {/* Central Floating Action Button */}
+                <div className="relative -top-8 flex flex-col items-center">
                   <Link to="/admin/jobs/create">
-                    <div className={`w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-110 hover:shadow-purple-500/30 ${isActive('/admin/jobs/create') ? 'bg-[#6A38C2] text-white ring-4 ring-purple-100' : 'bg-[#6A38C2] text-white border-4 border-white'}`}>
-                      <Plus size={28} />
+                    <div className={`w-14 h-14 rounded-full flex items-center justify-center shadow-xl transition-all hover:scale-110 active:scale-95 ${isActive('/admin/jobs/create') ? 'bg-[#6A38C2] text-white ring-4 ring-purple-100 dark:ring-purple-900/30 shadow-purple-500/40' : 'bg-[#6A38C2] text-white border-4 border-white dark:border-neutral-900 shadow-purple-500/20'}`}>
+                      <Plus size={28} strokeWidth={3} />
                     </div>
                   </Link>
+                  <span className="text-[10px] mt-2 font-bold text-[#6A38C2] uppercase tracking-widest whitespace-nowrap">Post Job</span>
                 </div>
 
-                <div className="w-6"></div> {/* Spacer to balance layout since we only have 4 items vs 5 */}
+                <Link to="/admin/profile" className={`flex flex-col items-center justify-center transition-all duration-300 ${isActive('/admin/profile') ? 'text-[#6A38C2] scale-105' : 'text-gray-500 dark:text-gray-400 hover:text-[#6A38C2]'}`}>
+                  <User2 size={22} strokeWidth={isActive('/admin/profile') ? 2.5 : 2} />
+                  <span className={`text-[10px] mt-1 font-bold tracking-tight ${isActive('/admin/profile') ? 'text-[#6A38C2]' : ''}`}>Profile</span>
+                </Link>
 
-                <button onClick={logoutHandler} className="flex flex-col items-center gap-1 hover:text-purple-500 transition-colors duration-300">
-                  <LogOut size={24} />
+                <button onClick={logoutHandler} className="flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 hover:text-red-500 transition-all duration-300">
+                  <LogOut size={22} strokeWidth={2} />
+                  <span className="text-[10px] mt-1 font-bold tracking-tight">Logout</span>
                 </button>
               </>
             ) : (
               <>
-                <Link to="/" className={`flex flex-col items-center gap-1 transition-all duration-300 ${isActive('/') ? 'text-[#6A38C2] scale-110' : 'hover:text-[#6A38C2]'}`}>
-                  <Home size={24} strokeWidth={isActive('/') ? 3 : 2} />
-                  {isActive('/') && <span className="w-1 h-1 bg-[#6A38C2] rounded-full mt-1 animate-pulse"></span>}
+                <Link to="/" className={`flex flex-col items-center justify-center transition-all duration-300 ${isActive('/') ? 'text-[#6A38C2] scale-105' : 'text-gray-500 dark:text-gray-400 hover:text-[#6A38C2]'}`}>
+                  <Home size={22} strokeWidth={isActive('/') ? 2.5 : 2} />
+                  <span className={`text-[10px] mt-1 font-bold tracking-tight ${isActive('/') ? 'text-[#6A38C2]' : ''}`}>Home</span>
                 </Link>
 
-                <Link to="/jobs" className={`flex flex-col items-center gap-1 transition-all duration-300 ${isActive('/jobs') ? 'text-[#6A38C2] scale-110' : 'hover:text-[#6A38C2]'}`}>
-                  <Briefcase size={24} strokeWidth={isActive('/jobs') ? 3 : 2} />
-                  {isActive('/jobs') && <span className="w-1 h-1 bg-[#6A38C2] rounded-full mt-1 animate-pulse"></span>}
+                <Link to="/jobs" className={`flex flex-col items-center justify-center transition-all duration-300 ${isActive('/jobs') ? 'text-[#6A38C2] scale-105' : 'text-gray-500 dark:text-gray-400 hover:text-[#6A38C2]'}`}>
+                  <Briefcase size={22} strokeWidth={isActive('/jobs') ? 2.5 : 2} />
+                  <span className={`text-[10px] mt-1 font-bold tracking-tight ${isActive('/jobs') ? 'text-[#6A38C2]' : ''}`}>Jobs</span>
                 </Link>
 
                 {/* Central Floating Action Button */}
-                <div className="relative -top-8">
+                <div className="relative -top-8 flex flex-col items-center">
                   <Link to="/browse">
-                    <div className={`w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-110 hover:shadow-purple-500/30 ${isActive('/browse') ? 'bg-[#6A38C2] text-white ring-4 ring-purple-100' : 'bg-[#6A38C2] text-white border-4 border-white'}`}>
-                      <Compass size={28} />
+                    <div className={`w-14 h-14 rounded-full flex items-center justify-center shadow-xl transition-all hover:scale-110 active:scale-95 ${isActive('/browse') ? 'bg-[#6A38C2] text-white ring-4 ring-purple-100 dark:ring-purple-900/30 shadow-purple-500/40' : 'bg-[#6A38C2] text-white border-4 border-white dark:border-neutral-900 shadow-purple-500/20'}`}>
+                      <Compass size={28} strokeWidth={2.5} />
                     </div>
                   </Link>
+                  <span className="text-[10px] mt-2 font-bold text-[#6A38C2] uppercase tracking-widest whitespace-nowrap">Browse</span>
                 </div>
 
-                <Link to={user ? "/profile" : "/login"} className={`flex flex-col items-center gap-1 transition-all duration-300 ${isActive('/profile') || isActive('/login') ? 'text-[#6A38C2] scale-110' : 'hover:text-[#6A38C2]'}`}>
-                  <User2 size={24} strokeWidth={isActive('/profile') ? 3 : 2} />
-                  {isActive('/profile') && <span className="w-1 h-1 bg-[#6A38C2] rounded-full mt-1 animate-pulse"></span>}
+                <Link to={user ? (user.role === 'recruiter' ? "/admin/profile" : "/profile") : "/login"} className={`flex flex-col items-center justify-center transition-all duration-300 ${isActive('/profile') || isActive('/admin/profile') || isActive('/login') ? 'text-[#6A38C2] scale-105' : 'text-gray-500 dark:text-gray-400 hover:text-[#6A38C2]'}`}>
+                  <User2 size={22} strokeWidth={isActive('/profile') || isActive('/admin/profile') ? 2.5 : 2} />
+                  <span className={`text-[10px] mt-1 font-bold tracking-tight ${isActive('/profile') || isActive('/admin/profile') ? 'text-[#6A38C2]' : ''}`}>Profile</span>
                 </Link>
 
-                <button onClick={user ? logoutHandler : () => navigate('/login')} className="flex flex-col items-center gap-1 hover:text-purple-500 transition-colors duration-300">
-                  <LogOut size={24} />
+                <button onClick={user ? logoutHandler : () => navigate('/login')} className="flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 hover:text-purple-500 transition-all duration-300">
+                  <LogOut size={22} strokeWidth={isActive('/login') ? 2.5 : 2} />
+                  <span className="text-[10px] mt-1 font-bold tracking-tight">{user ? "Logout" : "Login"}</span>
                 </button>
               </>
             )
@@ -210,7 +217,7 @@ const Navbar = () => {
               <Button size="sm" className="rounded-full text-white bg-[#6A38C2] hover:bg-[#5b30a6]">Login</Button>
             </Link>
           ) : (
-            <Link to="/profile">
+            <Link to={user.role === 'recruiter' ? "/admin/profile" : "/profile"}>
               <Avatar className="w-8 h-8 border border-gray-200 dark:border-gray-700 hover:border-purple-500 transition-colors">
                 <AvatarImage src={user?.profile?.profilePhoto} className="object-cover" />
               </Avatar>

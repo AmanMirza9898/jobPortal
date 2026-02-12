@@ -16,7 +16,7 @@ const Layout = () => {
     <div className="layout-container">
       <Navbar />
 
-      <main className="min-h-[80vh] pt-28">
+      <main className="min-h-[80vh] pt-20 md:pt-28">
         <Outlet />
       </main>
 

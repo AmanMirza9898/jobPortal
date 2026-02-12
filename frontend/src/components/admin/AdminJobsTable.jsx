@@ -6,11 +6,34 @@ import { Edit2, Eye, MoreHorizontal } from 'lucide-react'
 import { useSelector } from 'react-redux'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { Trash2 } from 'lucide-react'
+import axios from 'axios'
+import { JOB_API_END_POINT } from '@/utils/constant'
+import { toast } from 'sonner'
+import { useDispatch } from 'react-redux'
+import { setAllAdminJobs } from '@/redux/jobSlice'
 
 export const AdminJobsTable = () => {
     const { allAdminJobs, searchJobByText } = useSelector(store => store.job);
     const [filterJobs, setFilterJobs] = useState(allAdminJobs);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const deleteHandler = async (jobId) => {
+        try {
+            const res = await axios.delete(`${JOB_API_END_POINT}/delete/${jobId}`, {
+                withCredentials: true
+            });
+            if (res.data.success) {
+                const updatedJobs = allAdminJobs.filter((job) => job._id !== jobId);
+                dispatch(setAllAdminJobs(updatedJobs));
+                toast.success(res.data.message);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response.data.message);
+        }
+    }
 
     useEffect(() => {
         const filteredJobs = allAdminJobs.length >= 0 && allAdminJobs.filter((job) => {
@@ -57,6 +80,10 @@ export const AdminJobsTable = () => {
                                                 <div onClick={() => navigate(`/admin/jobs/${job._id}/applicants`)} className='flex items-center w-full gap-2 cursor-pointer p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg text-gray-700 dark:text-gray-200 transition-colors'>
                                                     <Eye className='w-4' />
                                                     <span>Applicants</span>
+                                                </div>
+                                                <div onClick={() => deleteHandler(job._id)} className='flex items-center w-full gap-2 cursor-pointer p-2 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 rounded-lg transition-colors font-medium'>
+                                                    <Trash2 className='w-4' />
+                                                    <span>Delete</span>
                                                 </div>
                                             </div>
                                         </PopoverContent>

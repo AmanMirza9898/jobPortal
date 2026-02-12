@@ -6,11 +6,34 @@ import { Edit2, MoreHorizontal } from 'lucide-react'
 import { useSelector } from 'react-redux'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { Trash2 } from 'lucide-react'
+import axios from 'axios'
+import { COMPANY_API_END_POINT } from '@/utils/constant'
+import { toast } from 'sonner'
+import { setCompanies } from '@/redux/companySlice'
+import { useDispatch } from 'react-redux'
 
 export const CompaniesTable = () => {
     const { companies, searchCompanyByText } = useSelector(store => store.company);
     const [filterCompanies, setFilterCompanies] = useState(companies);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const deleteHandler = async (companyId) => {
+        try {
+            const res = await axios.delete(`${COMPANY_API_END_POINT}/delete/${companyId}`, {
+                withCredentials: true
+            });
+            if (res.data.success) {
+                const updatedCompanies = companies.filter((company) => company._id !== companyId);
+                dispatch(setCompanies(updatedCompanies));
+                toast.success(res.data.message);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response.data.message);
+        }
+    }
 
     useEffect(() => {
         const filteredCompany = companies.length >= 0 && companies.filter((company) => {
@@ -31,7 +54,7 @@ export const CompaniesTable = () => {
                 <TableHeader>
                     <TableRow className="border-none hover:bg-transparent">
                         <TableHead className="w-[100px] pl-6 font-bold text-gray-700 dark:text-gray-300">Logo</TableHead>
-                        <TableHead className="font-bold text-gray-700 dark:text-gray-300">Name</TableHead>
+                        <TableHead className="font-bold text-gray-700 dark:text-gray-300"> Company Name</TableHead>
                         <TableHead className="font-bold text-gray-700 dark:text-gray-300">Website</TableHead>
                         <TableHead className="font-bold text-gray-700 dark:text-gray-300">Location</TableHead>
                         <TableHead className="font-bold text-gray-700 dark:text-gray-300">Date</TableHead>
@@ -58,6 +81,10 @@ export const CompaniesTable = () => {
                                             <div onClick={() => navigate(`/admin/companies/${company._id}`)} className='flex items-center gap-3 w-full cursor-pointer px-4 py-3 hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-[#6A38C2] dark:hover:text-[#a04ee0] transition-colors text-sm font-medium text-gray-700 dark:text-gray-300'>
                                                 <Edit2 className='w-4 h-4' />
                                                 <span>Edit</span>
+                                            </div>
+                                            <div onClick={() => deleteHandler(company._id)} className='flex items-center gap-3 w-full cursor-pointer px-4 py-3 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 transition-colors text-sm font-medium text-gray-700 dark:text-gray-300'>
+                                                <Trash2 className='w-4 h-4' />
+                                                <span>Delete</span>
                                             </div>
                                         </PopoverContent>
                                     </Popover>

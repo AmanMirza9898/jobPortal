@@ -204,7 +204,7 @@ const Signup = () => {
 
               <div className="pt-2 pb-4">
                 {loading ? (
-                  <Button className="w-full py-3 rounded-xl text-lg font-medium">
+                  <Button disabled className="w-full py-3 rounded-xl bg-black dark:bg-white text-white dark:text-black text-lg font-medium opacity-100 disabled:opacity-100">
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                     Please wait
                   </Button>

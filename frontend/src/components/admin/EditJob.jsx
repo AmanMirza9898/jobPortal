@@ -16,7 +16,6 @@ const EditJob = () => {
     const [input, setInput] = useState({
         title: "",
         description: "",
-        requirements: "",
         salary: "",
         location: "",
         jobType: "",
@@ -49,7 +48,6 @@ const EditJob = () => {
                     setInput({
                         title: job.title,
                         description: job.description,
-                        requirements: job.requirements.join(","),
                         salary: job.salary,
                         location: job.location,
                         jobType: job.jobType,
@@ -123,16 +121,6 @@ const EditJob = () => {
                                 type="text"
                                 name="description"
                                 value={input.description}
-                                onChange={changeEventHandler}
-                                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1 rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-black/40 text-gray-900 dark:text-gray-100"
-                            />
-                        </div>
-                        <div>
-                            <Label className="text-gray-700 dark:text-gray-300 font-medium">Requirements</Label>
-                            <Input
-                                type="text"
-                                name="requirements"
-                                value={input.requirements}
                                 onChange={changeEventHandler}
                                 className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1 rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-black/40 text-gray-900 dark:text-gray-100"
                             />

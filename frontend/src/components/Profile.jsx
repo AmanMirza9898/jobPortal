@@ -19,7 +19,7 @@ export default function Profile() {
   const isResume = user?.profile?.resume ? true : false;
   return (
     <>
-      <div className="max-w-4xl mx-auto mt-5 px-4 md:px-0">
+      <div className="max-w-4xl mx-auto mt-2 md:mt-5 px-4 md:px-0">
 
         {/* Profile Card */}
         <div className="bg-white dark:bg-neutral-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-4 md:p-8 shadow-xl mb-5 relative overflow-hidden">
@@ -70,7 +70,6 @@ export default function Profile() {
 
           {/* Skills & Resume Section */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6 border-t border-gray-100 dark:border-gray-800 pt-8">
-
             {/* Skills */}
             <div>
               <h1 className="font-bold text-lg text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">

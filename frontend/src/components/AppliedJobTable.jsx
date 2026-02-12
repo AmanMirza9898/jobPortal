@@ -10,6 +10,8 @@ import {
 } from "./ui/table";
 import { Badge } from "./ui/badge";
 import { useSelector } from "react-redux";
+import { CheckCircle2, XCircle, Clock } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function AppliedJobTable() {
   const { allAppliedJobs } = useSelector((store) => store.job);
@@ -35,7 +37,22 @@ export default function AppliedJobTable() {
                 <TableCell className="font-medium text-gray-800 dark:text-gray-100">{appliedJob.job?.title}</TableCell>
                 <TableCell className="font-medium text-gray-600 dark:text-gray-300">{appliedJob.job?.company?.name}</TableCell>
                 <TableCell className="text-right last:rounded-r-xl">
-                  <Badge className={`${appliedJob?.status === "rejected" ? 'bg-red-400' : appliedJob?.status === 'pending' ? 'bg-gray-400' : 'bg-green-400'} text-white font-bold`}>{appliedJob.status.toUpperCase()}</Badge>
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={appliedJob?.status}
+                      initial={{ opacity: 0, x: 10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -10 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Badge className={`${appliedJob?.status.toLowerCase() === "rejected" ? 'bg-red-500/10 text-red-600 border-red-200' : appliedJob?.status.toLowerCase() === 'pending' ? 'bg-gray-500/10 text-gray-600 border-gray-200' : 'bg-green-500/10 text-green-600 border-green-200'} font-bold px-3 py-1 rounded-full border backdrop-blur-sm shadow-xs flex items-center gap-1 w-fit ml-auto`}>
+                        {appliedJob.status.toLowerCase() === "accepted" && <CheckCircle2 className="w-3 h-3" />}
+                        {appliedJob.status.toLowerCase() === "rejected" && <XCircle className="w-3 h-3" />}
+                        {appliedJob.status.toLowerCase() === "pending" && <Clock className="w-3 h-3" />}
+                        <span>{appliedJob.status.toUpperCase()}</span>
+                      </Badge>
+                    </motion.div>
+                  </AnimatePresence>
                 </TableCell>
               </TableRow>
             ) : null

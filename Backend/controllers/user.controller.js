@@ -4,6 +4,33 @@ import jwt from "jsonwebtoken";
 import cloudinary from "../utils/cloudinary.js";
 import { Readable } from "stream"; // Stream import zaroori hai
 import getDataUri from "../utils/datauri.js";
+
+// --- Helper for Cloudinary Deletion ---
+const deleteFromCloudinary = async (url) => {
+    if (!url) return;
+    try {
+        const parts = url.split('/');
+        const uploadIndex = parts.indexOf('upload');
+        if (uploadIndex !== -1) {
+            const resourceType = parts[uploadIndex - 1]; // 'image', 'video', or 'raw'
+            // Old URLs might not have a version, but usually they do. 
+            // Most robust: get everything after 'v<digits>' or after 'upload' if no 'v'
+            let publicIdWithExt;
+            let possibleVersion = parts[uploadIndex + 1];
+            if (possibleVersion.startsWith('v') && !isNaN(possibleVersion.substring(1))) {
+                publicIdWithExt = parts.slice(uploadIndex + 2).join('/');
+            } else {
+                publicIdWithExt = parts.slice(uploadIndex + 1).join('/');
+            }
+            const publicId = publicIdWithExt.split('.')[0];
+            await cloudinary.uploader.destroy(publicId, { resource_type: resourceType });
+            console.log(`Deleted from Cloudinary: ${publicId} (${resourceType})`);
+        }
+    } catch (err) {
+        console.error("Cloudinary deletion failed:", err);
+    }
+};
+
 // --- REGISTER ---
 export const register = async (req, res) => {
     try {
@@ -108,7 +135,7 @@ export const updateProfile = async (req, res) => {
         const { fullname, phoneNumber, email, bio, skills } = req.body;
         console.log("Update Profile Body:", req.body); // Debug Log
 
-        const file = req.file;
+        const files = req.files;
         const userId = req.id; // Ensure authentication middleware sets this
 
         let user = await User.findById(userId);
@@ -116,30 +143,44 @@ export const updateProfile = async (req, res) => {
             return res.status(404).json({ message: "User not found", success: false });
         }
 
-        // --- 1. CLOUDINARY UPLOAD (STREAM) ---
-        let cloudResponse;
-        if (file) {
-            // Convert buffer to readable stream
-            const stream = Readable.from(file.buffer);
+        // --- 1. CLOUDINARY UPLOADS (STREAM) ---
 
-            cloudResponse = await new Promise((resolve, reject) => {
+        // --- Handle Resume ---
+        let resumeResponse;
+        if (files && files.file) {
+            const resumeFile = files.file[0];
+            const stream = Readable.from(resumeFile.buffer);
+            resumeResponse = await new Promise((resolve, reject) => {
                 const uploadStream = cloudinary.uploader.upload_stream(
-                    {
-                        resource_type: "auto", // Works best for mixed file types (PDF/Images)
-                        folder: "resumes",
-                    },
-                    (error, result) => {
-                        if (error) {
-                            console.error("Cloudinary Upload Error:", error);
-                            reject(error);
-                        } else {
-                            resolve(result);
-                        }
-                    }
+                    { resource_type: "auto", folder: "resumes" },
+                    (error, result) => { if (error) reject(error); else resolve(result); }
                 );
-                // Pipe the file data to Cloudinary
                 stream.pipe(uploadStream);
             });
+
+            // Delete old resume if it exists on Cloudinary
+            if (user.profile.resume) {
+                await deleteFromCloudinary(user.profile.resume);
+            }
+        }
+
+        // --- Handle Profile Photo ---
+        let photoResponse;
+        if (files && files.profilePhoto) {
+            const photoFile = files.profilePhoto[0];
+            const stream = Readable.from(photoFile.buffer);
+            photoResponse = await new Promise((resolve, reject) => {
+                const uploadStream = cloudinary.uploader.upload_stream(
+                    { resource_type: "image", folder: "avatars" },
+                    (error, result) => { if (error) reject(error); else resolve(result); }
+                );
+                stream.pipe(uploadStream);
+            });
+
+            // Delete old profile photo if it exists on Cloudinary
+            if (user.profile.profilePhoto) {
+                await deleteFromCloudinary(user.profile.profilePhoto);
+            }
         }
 
         // --- 2. UPDATE FIELDS ---
@@ -158,10 +199,14 @@ export const updateProfile = async (req, res) => {
             user.profile.skills = skills.split(',').map(skill => skill.trim());
         }
 
-        // --- 3. SAVE RESUME URL ---
-        if (cloudResponse) {
-            user.profile.resume = cloudResponse.secure_url; // This will now be a valid public URL
-            user.profile.resumeOriginalName = file.originalname;
+        // --- 3. SAVE URLS ---
+        if (resumeResponse) {
+            user.profile.resume = resumeResponse.secure_url;
+            user.profile.resumeOriginalName = files.file[0].originalname;
+        }
+
+        if (photoResponse) {
+            user.profile.profilePhoto = photoResponse.secure_url;
         }
 
         await user.save();

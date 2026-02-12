@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Button } from '../ui/button'
-import { ArrowLeft, Loader2 } from 'lucide-react'
+import { ArrowLeft, Loader2, Plus } from 'lucide-react'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
 import axios from 'axios'
@@ -148,19 +148,33 @@ export const CompanySetup = () => {
 
             <div className="col-span-1 md:col-span-2 space-y-2">
               <Label className="text-gray-700 dark:text-gray-300 font-medium h-fit">Company Logo</Label>
-              <div className="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl p-6 flex items-center justify-center bg-gray-50 dark:bg-black/20 hover:bg-gray-100 dark:hover:bg-black/40 transition-colors cursor-pointer relative">
-                <Input
-                  type='file'
-                  accept='image/*'
-                  onChange={changefileHandler}
-                  className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10"
-                />
-                <div className="text-center">
-                  <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">Click to upload or drag and drop</p>
-                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">SVG, PNG, JPG or GIF (max. 1MB)</p>
+              <div className="flex flex-col md:flex-row items-center gap-6 p-4 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-black/20">
+                <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-gray-100 dark:border-gray-800 bg-white dark:bg-neutral-800 shadow-sm shrink-0">
+                  {input.file ? (
+                    <img
+                      src={typeof input.file === 'string' ? input.file : URL.createObjectURL(input.file)}
+                      alt="logo preview"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-gray-400">
+                      <Plus className="w-8 h-8" />
+                    </div>
+                  )}
+                </div>
+                <div className="flex-1 w-full relative">
+                  <Input
+                    type='file'
+                    accept='image/*'
+                    onChange={changefileHandler}
+                    className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10"
+                  />
+                  <div className="text-center md:text-left border-2 border-dashed border-purple-200 dark:border-purple-900/50 rounded-lg p-4 hover:bg-purple-50 dark:hover:bg-purple-900/10 transition-colors">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">Click to upload or drag logo</p>
+                    <p className="text-xs text-gray-400 mt-1">PNG, JPG or SVG (max. 1MB)</p>
+                  </div>
                 </div>
               </div>
-              {/* Preview could be added here if needed, but not requested explicitly */}
             </div>
 
           </div>
@@ -168,7 +182,7 @@ export const CompanySetup = () => {
           <div className="mt-8">
             {
               loading ?
-                <Button disabled className='w-full h-11 rounded-xl bg-[#6A38C2]/70 text-white'>
+                <Button disabled className='w-full h-11 rounded-xl bg-[#6A38C2] text-white opacity-100 disabled:opacity-100'>
                   <Loader2 className='mr-2 h-5 w-5 animate-spin' /> Please wait
                 </Button>
                 :

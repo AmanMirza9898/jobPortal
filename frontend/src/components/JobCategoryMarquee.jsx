@@ -27,7 +27,7 @@ const categories = [
 
 export const JobCategoryMarquee = () => {
     return (
-        <div className="py-10 bg-white dark:bg-[#0b0b0b] overflow-hidden relative">
+        <div className="py-10 overflow-hidden relative">
             <div className="text-center mb-8">
                 <h2 className="text-2xl font-bold bg-linear-to-r from-[#6A38C2] to-[#F83002] text-transparent bg-clip-text">
                     Explore Top Dimensions
@@ -48,7 +48,7 @@ export const JobCategoryMarquee = () => {
                     {[...categories, ...categories, ...categories].map((cat, index) => (
                         <div
                             key={index}
-                            className="inline-block w-48 p-6 bg-white dark:bg-white/5 backdrop-blur-md rounded-xl border border-gray-200 dark:border-white/10 shadow-lg dark:shadow-none transition-all duration-300 cursor-pointer hover:scale-110 hover:shadow-2xl hover:z-10 bg-white/80 dark:bg-white/10"
+                            className="inline-block w-48 p-6 bg-white/80 dark:bg-white/5 backdrop-blur-md rounded-xl border border-gray-200 dark:border-white/10 shadow-lg dark:shadow-none transition-all duration-300 cursor-pointer hover:shadow-xl md:hover:scale-110 md:hover:z-10"
                         >
                             <div className="flex flex-col items-center justify-center gap-3">
                                 <div className="p-3 bg-gray-50/50 dark:bg-white/5 rounded-full text-[#6A38C2] dark:text-white transition-colors">
@@ -68,8 +68,10 @@ export const JobCategoryMarquee = () => {
                     0% { transform: translateX(0); }
                     100% { transform: translateX(-33.33%); }
                 }
-                .pause-on-hover:hover {
-                    animation-play-state: paused !important;
+                @media (hover: hover) {
+                    .pause-on-hover:hover {
+                        animation-play-state: paused !important;
+                    }
                 }
             `}</style>
         </div>

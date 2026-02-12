@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
+import { Avatar, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { Loader2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,7 +22,8 @@ export default function UpdateProfileDialog({ open, setOpen }) {
     phoneNumber: "",
     bio: "",
     skills: "",
-    file: null
+    file: null, // This is for Resume
+    profilePhoto: null // This is for Profile Picture
   });
 
   // Sync state with User data whenever the modal opens or user data changes
@@ -34,7 +36,8 @@ export default function UpdateProfileDialog({ open, setOpen }) {
         bio: user.profile?.bio || "",
         // Convert array to comma-separated string for editing (e.g., "HTML, CSS")
         skills: user.profile?.skills?.map(skill => skill).join(", ") || "",
-        file: null // Always reset file input on open
+        file: null, // Always reset resume input on open
+        profilePhoto: null // Always reset photo input on open
       });
     }
   }, [user, open]);
@@ -54,6 +57,17 @@ export default function UpdateProfileDialog({ open, setOpen }) {
     }
   };
 
+  const photoChangeHandler = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 1024 * 1024) { // 1MB limit
+        toast.error("Image size must be less than 1MB");
+        return;
+      }
+      setInput({ ...input, profilePhoto: file });
+    }
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -67,6 +81,9 @@ export default function UpdateProfileDialog({ open, setOpen }) {
 
     if (input.file) {
       formData.append("file", input.file);
+    }
+    if (input.profilePhoto) {
+      formData.append("profilePhoto", input.profilePhoto);
     }
 
     try {
@@ -154,36 +171,61 @@ export default function UpdateProfileDialog({ open, setOpen }) {
                 </div>
               </div>
 
-              {/* Row 3: Skills (Full Width) */}
-              <div className="space-y-2">
-                <Label htmlFor="skills" className="text-gray-600 dark:text-gray-400 font-medium">Skills</Label>
-                <Input
-                  id="skills"
-                  name="skills"
-                  value={input.skills}
-                  onChange={changeEventHandler}
-                  className="h-11 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 focus:border-[#6A38C2] focus:ring-1 focus:ring-[#6A38C2]"
-                />
-              </div>
+              {/* Row 3: Skills (Full Width - Only for Students) */}
+              {user?.role === 'student' && (
+                <div className="space-y-2">
+                  <Label htmlFor="skills" className="text-gray-600 dark:text-gray-400 font-medium">Skills</Label>
+                  <Input
+                    id="skills"
+                    name="skills"
+                    value={input.skills}
+                    onChange={changeEventHandler}
+                    className="h-11 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 focus:border-[#6A38C2] focus:ring-1 focus:ring-[#6A38C2]"
+                  />
+                </div>
+              )}
 
-              {/* Row 4: Resume (Styled Input) */}
-              <div className="space-y-2">
-                <Label htmlFor="file" className="text-gray-600 dark:text-gray-400 font-medium">Resume</Label>
-                <Input
-                  id="file"
-                  name="file"
-                  type="file"
-                  accept="application/pdf"
-                  onChange={fileChangeHandler}
-                  className="h-11 p-2 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 file:bg-[#6A38C2] file:text-white file:border-none file:rounded-lg file:mr-4 file:px-4 file:py-1 hover:file:bg-[#5b30a6] cursor-pointer"
-                />
+              {/* Row 4: Resume & Profile Picture */}
+              <div className={`grid grid-cols-1 ${user?.role === 'student' ? 'md:grid-cols-2' : ''} gap-4`}>
+                {user?.role === 'student' && (
+                  <div className="space-y-2">
+                    <Label htmlFor="file" className="text-gray-600 dark:text-gray-400 font-medium">Resume (PDF)</Label>
+                    <Input
+                      id="file"
+                      name="file"
+                      type="file"
+                      accept="application/pdf"
+                      onChange={fileChangeHandler}
+                      className="h-11 p-2 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 file:bg-[#6A38C2] file:text-white file:border-none file:rounded-lg file:mr-4 file:px-4 file:py-1 hover:file:bg-[#5b30a6] cursor-pointer"
+                    />
+                  </div>
+                )}
+                <div className="space-y-2">
+                  <Label htmlFor="profilePhoto" className="text-gray-600 dark:text-gray-400 font-medium">Profile Picture</Label>
+                  <div className="flex items-center gap-4">
+                    <Avatar className="h-12 w-12 border-2 border-gray-100 dark:border-gray-800">
+                      <AvatarImage
+                        src={input.profilePhoto ? URL.createObjectURL(input.profilePhoto) : user?.profile?.profilePhoto}
+                        className="object-cover"
+                      />
+                    </Avatar>
+                    <Input
+                      id="profilePhoto"
+                      name="profilePhoto"
+                      type="file"
+                      accept="image/*"
+                      onChange={photoChangeHandler}
+                      className="flex-1 h-11 p-2 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 file:bg-[#6A38C2] file:text-white file:border-none file:rounded-lg file:mr-4 file:px-4 file:py-1 hover:file:bg-[#5b30a6] cursor-pointer"
+                    />
+                  </div>
+                </div>
               </div>
 
             </div>
 
             <DialogFooter className="mt-8">
               {loading ? (
-                <Button className="w-full h-12 rounded-xl bg-[#6A38C2]" disabled>
+                <Button className="w-full h-12 rounded-xl bg-[#6A38C2] text-white opacity-100 disabled:opacity-100 cursor-not-allowed" disabled>
                   <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                   Updating...
                 </Button>

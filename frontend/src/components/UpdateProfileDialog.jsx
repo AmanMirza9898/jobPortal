@@ -112,133 +112,137 @@ export default function UpdateProfileDialog({ open, setOpen }) {
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent
-          className="bg-white dark:bg-neutral-900 sm:max-w-[600px] rounded-3xl p-8 border-none shadow-2xl"
+          className="bg-white dark:bg-neutral-900 w-[95vw] sm:max-w-[600px] rounded-3xl p-0 border-none shadow-2xl max-h-[95vh] overflow-hidden flex flex-col"
           onOpenAutoFocus={(e) => e.preventDefault()}
         >
-          <DialogHeader className="mb-6">
-            <DialogTitle className="text-2xl font-bold text-center text-gray-900 dark:text-gray-100">Update Profile</DialogTitle>
-          </DialogHeader>
-          <form onSubmit={submitHandler}>
-            <div className="grid gap-6">
+          <div className="p-6 md:p-8 flex flex-col h-full overflow-hidden">
+            <DialogHeader className="mb-6">
+              <DialogTitle className="text-2xl font-bold text-center text-gray-900 dark:text-gray-100">Update Profile</DialogTitle>
+            </DialogHeader>
+            <form onSubmit={submitHandler}>
+              <div className="max-h-[60vh] overflow-y-auto pr-2 -mr-2">
+                <div className="grid gap-6">
 
-              {/* Row 1: Name & Email */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="fullname" className="text-gray-600 dark:text-gray-400 font-medium">Name</Label>
-                  <Input
-                    id="fullname"
-                    name="fullname"
-                    onChange={changeEventHandler}
-                    value={input.fullname}
-                    type="text"
-                    className="h-11 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 focus:border-[#6A38C2] focus:ring-1 focus:ring-[#6A38C2]"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-gray-600 dark:text-gray-400 font-medium">Email</Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    onChange={changeEventHandler}
-                    value={input.email}
-                    className="h-11 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 focus:border-[#6A38C2] focus:ring-1 focus:ring-[#6A38C2]"
-                  />
-                </div>
-              </div>
-
-              {/* Row 2: Phone & Bio */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="phoneNumber" className="text-gray-600 dark:text-gray-400 font-medium">Phone Number</Label>
-                  <Input
-                    id="phoneNumber"
-                    value={input.phoneNumber}
-                    onChange={changeEventHandler}
-                    name="phoneNumber"
-                    className="h-11 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 focus:border-[#6A38C2] focus:ring-1 focus:ring-[#6A38C2]"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="bio" className="text-gray-600 dark:text-gray-400 font-medium">Bio</Label>
-                  <Input
-                    id="bio"
-                    value={input.bio}
-                    onChange={changeEventHandler}
-                    name="bio"
-                    className="h-11 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 focus:border-[#6A38C2] focus:ring-1 focus:ring-[#6A38C2]"
-                  />
-                </div>
-              </div>
-
-              {/* Row 3: Skills (Full Width - Only for Students) */}
-              {user?.role === 'student' && (
-                <div className="space-y-2">
-                  <Label htmlFor="skills" className="text-gray-600 dark:text-gray-400 font-medium">Skills</Label>
-                  <Input
-                    id="skills"
-                    name="skills"
-                    value={input.skills}
-                    onChange={changeEventHandler}
-                    className="h-11 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 focus:border-[#6A38C2] focus:ring-1 focus:ring-[#6A38C2]"
-                  />
-                </div>
-              )}
-
-              {/* Row 4: Resume & Profile Picture */}
-              <div className={`grid grid-cols-1 ${user?.role === 'student' ? 'md:grid-cols-2' : ''} gap-4`}>
-                {user?.role === 'student' && (
-                  <div className="space-y-2">
-                    <Label htmlFor="file" className="text-gray-600 dark:text-gray-400 font-medium">Resume (PDF)</Label>
-                    <Input
-                      id="file"
-                      name="file"
-                      type="file"
-                      accept="application/pdf"
-                      onChange={fileChangeHandler}
-                      className="h-11 p-2 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 file:bg-[#6A38C2] file:text-white file:border-none file:rounded-lg file:mr-4 file:px-4 file:py-1 hover:file:bg-[#5b30a6] cursor-pointer"
-                    />
-                  </div>
-                )}
-                <div className="space-y-2">
-                  <Label htmlFor="profilePhoto" className="text-gray-600 dark:text-gray-400 font-medium">Profile Picture</Label>
-                  <div className="flex items-center gap-4">
-                    <Avatar className="h-12 w-12 border-2 border-gray-100 dark:border-gray-800">
-                      <AvatarImage
-                        src={input.profilePhoto ? URL.createObjectURL(input.profilePhoto) : user?.profile?.profilePhoto}
-                        className="object-cover"
+                  {/* Row 1: Name & Email */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="fullname" className="text-gray-600 dark:text-gray-400 font-medium">Name</Label>
+                      <Input
+                        id="fullname"
+                        name="fullname"
+                        onChange={changeEventHandler}
+                        value={input.fullname}
+                        type="text"
+                        className="h-11 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 focus:border-[#6A38C2] focus:ring-1 focus:ring-[#6A38C2]"
                       />
-                    </Avatar>
-                    <Input
-                      id="profilePhoto"
-                      name="profilePhoto"
-                      type="file"
-                      accept="image/*"
-                      onChange={photoChangeHandler}
-                      className="flex-1 h-11 p-2 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 file:bg-[#6A38C2] file:text-white file:border-none file:rounded-lg file:mr-4 file:px-4 file:py-1 hover:file:bg-[#5b30a6] cursor-pointer"
-                    />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email" className="text-gray-600 dark:text-gray-400 font-medium">Email</Label>
+                      <Input
+                        id="email"
+                        name="email"
+                        type="email"
+                        onChange={changeEventHandler}
+                        value={input.email}
+                        className="h-11 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 focus:border-[#6A38C2] focus:ring-1 focus:ring-[#6A38C2]"
+                      />
+                    </div>
                   </div>
+
+                  {/* Row 2: Phone & Bio */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="phoneNumber" className="text-gray-600 dark:text-gray-400 font-medium">Phone Number</Label>
+                      <Input
+                        id="phoneNumber"
+                        value={input.phoneNumber}
+                        onChange={changeEventHandler}
+                        name="phoneNumber"
+                        className="h-11 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 focus:border-[#6A38C2] focus:ring-1 focus:ring-[#6A38C2]"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="bio" className="text-gray-600 dark:text-gray-400 font-medium">Bio</Label>
+                      <Input
+                        id="bio"
+                        value={input.bio}
+                        onChange={changeEventHandler}
+                        name="bio"
+                        className="h-11 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 focus:border-[#6A38C2] focus:ring-1 focus:ring-[#6A38C2]"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Row 3: Skills (Full Width - Only for Students) */}
+                  {user?.role === 'student' && (
+                    <div className="space-y-2">
+                      <Label htmlFor="skills" className="text-gray-600 dark:text-gray-400 font-medium">Skills</Label>
+                      <Input
+                        id="skills"
+                        name="skills"
+                        value={input.skills}
+                        onChange={changeEventHandler}
+                        className="h-11 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 focus:border-[#6A38C2] focus:ring-1 focus:ring-[#6A38C2]"
+                      />
+                    </div>
+                  )}
+
+                  {/* Row 4: Resume & Profile Picture */}
+                  <div className={`grid grid-cols-1 ${user?.role === 'student' ? 'md:grid-cols-2' : ''} gap-4`}>
+                    {user?.role === 'student' && (
+                      <div className="space-y-2">
+                        <Label htmlFor="file" className="text-gray-600 dark:text-gray-400 font-medium">Resume (PDF)</Label>
+                        <Input
+                          id="file"
+                          name="file"
+                          type="file"
+                          accept="application/pdf"
+                          onChange={fileChangeHandler}
+                          className="h-11 p-2 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 file:bg-[#6A38C2] file:text-white file:border-none file:rounded-lg file:mr-4 file:px-4 file:py-1 hover:file:bg-[#5b30a6] cursor-pointer"
+                        />
+                      </div>
+                    )}
+                    <div className="space-y-2">
+                      <Label htmlFor="profilePhoto" className="text-gray-600 dark:text-gray-400 font-medium">Profile Picture</Label>
+                      <div className="flex items-center gap-4">
+                        <Avatar className="h-12 w-12 border-2 border-gray-100 dark:border-gray-800">
+                          <AvatarImage
+                            src={input.profilePhoto ? URL.createObjectURL(input.profilePhoto) : user?.profile?.profilePhoto}
+                            className="object-cover"
+                          />
+                        </Avatar>
+                        <Input
+                          id="profilePhoto"
+                          name="profilePhoto"
+                          type="file"
+                          accept="image/*"
+                          onChange={photoChangeHandler}
+                          className="flex-1 h-11 p-2 rounded-xl border-gray-200 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 file:bg-[#6A38C2] file:text-white file:border-none file:rounded-lg file:mr-4 file:px-4 file:py-1 hover:file:bg-[#5b30a6] cursor-pointer"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
               </div>
 
-            </div>
-
-            <DialogFooter className="mt-8">
-              {loading ? (
-                <Button className="w-full h-12 rounded-xl bg-[#6A38C2] text-white opacity-100 disabled:opacity-100 cursor-not-allowed" disabled>
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                  Updating...
-                </Button>
-              ) : (
-                <Button
-                  type="submit"
-                  className="w-full h-12 rounded-xl bg-[#6A38C2] hover:bg-[#5b30a6] text-white font-semibold shadow-lg transition-all hover:shadow-xl hover:-translate-y-0.5"
-                >
-                  Save Changes
-                </Button>
-              )}
-            </DialogFooter>
-          </form>
+              <DialogFooter className="mt-8">
+                {loading ? (
+                  <Button className="w-full h-12 rounded-xl bg-[#6A38C2] text-white opacity-100 disabled:opacity-100 cursor-not-allowed" disabled>
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                    Updating...
+                  </Button>
+                ) : (
+                  <Button
+                    type="submit"
+                    className="w-full h-12 rounded-xl bg-[#6A38C2] hover:bg-[#5b30a6] text-white font-semibold shadow-lg transition-all hover:shadow-xl hover:-translate-y-0.5"
+                  >
+                    Save Changes
+                  </Button>
+                )}
+              </DialogFooter>
+            </form>
+          </div>
         </DialogContent>
       </Dialog>
     </div>

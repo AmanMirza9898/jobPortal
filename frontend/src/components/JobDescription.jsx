@@ -56,7 +56,7 @@ export default function JobDescription() {
   }, [jobId, dispatch, singleJob?._id]);
 
   return (
-    <div className="max-w-4xl mx-auto mt-5 px-4 md:px-0">
+    <div className="max-w-4xl mx-auto mt-5 px-4 md:px-0 pb-28">
 
       {/* Back Button */}
       <Button variant="ghost" className="mb-6 -ml-4 text-gray-600 dark:text-gray-400 hover:text-[#6A38C2] dark:hover:text-[#a04ee0]" onClick={() => navigate(-1)}>
@@ -80,11 +80,11 @@ export default function JobDescription() {
               )}
             </div>
             <div>
-              <h1 className="text-3xl font-extrabold text-gray-900 dark:text-gray-100">{singleJob?.title}</h1>
-              <div className="flex items-center gap-3 mt-2 text-gray-600 dark:text-gray-400">
-                <span className="font-bold text-[#6A38C2] dark:text-[#a04ee0] text-lg">{singleJob?.company?.name}</span>
-                <span className="text-gray-400">•</span>
-                <span className="text-sm text-gray-500 font-medium flex items-center gap-1"><MapPin size={14} /> {singleJob?.location}</span>
+              <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-gray-100 break-words line-clamp-2 md:line-clamp-none">{singleJob?.title}</h1>
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2 text-gray-600 dark:text-gray-400 max-w-full">
+                <span className="font-bold text-[#6A38C2] dark:text-[#a04ee0] text-lg break-all">{singleJob?.company?.name}</span>
+                <span className="hidden xs:inline text-gray-400">•</span>
+                <span className="text-sm text-gray-500 font-medium flex items-center gap-1 break-all"><MapPin size={14} className="shrink-0" /> {singleJob?.location}</span>
               </div>
             </div>
           </div>

@@ -44,14 +44,14 @@ const Navbar = () => {
     <>
       {/* DESKTOP NAVBAR (Floating Pill) */}
       <div className="hidden md:flex fixed top-6 left-1/2 -translate-x-1/2 z-50">
-        <div className="bg-white/80 dark:bg-[#020817]/80 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-xl rounded-full md:px-4 lg:px-6 py-3 flex items-center md:gap-4 lg:gap-8">
+        <div className="bg-white/80 dark:bg-[#020817]/80 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-xl rounded-full px-4 lg:px-6 py-3 flex items-center gap-3 lg:gap-8">
           <div className="mr-4">
             <Link to="/">
               <img src={logo} alt="JobSync" className="h-10 w-auto shrink-0" />
             </Link>
           </div>
 
-          <ul className="flex font-medium items-center md:gap-4 lg:gap-6 text-gray-600 dark:text-gray-300">
+          <ul className="flex font-semibold items-center gap-4 lg:gap-6 text-gray-700 dark:text-gray-300 text-sm lg:text-base">
             {
               user && user.role === 'recruiter' ? (
                 <>
@@ -61,10 +61,10 @@ const Navbar = () => {
               ) : (
 
                 <>
-                  <Link to="/" className={`hover:text-[#6A38C2] transition-colors ${isActive('/') ? 'text-[#6A38C2] font-semibold' : ''}`}>Home</Link>
-                  <Link to="/jobs" className={`hover:text-[#6A38C2] transition-colors ${isActive('/jobs') ? 'text-[#6A38C2] font-semibold' : ''}`}>Jobs</Link>
-                  <Link to="/browse" className={`hover:text-[#6A38C2] transition-colors ${isActive('/browse') ? 'text-[#6A38C2] font-semibold' : ''}`}>Browse</Link>
-                  <Link to="/ai-resume-scorer" className={`hover:text-[#6A38C2] transition-colors ${isActive('/ai-resume-scorer') ? 'text-[#6A38C2] font-semibold' : ''}`}>AI Scorer</Link>
+                  <Link to="/" className={`hover:text-[#6A38C2] transition-colors whitespace-nowrap ${isActive('/') ? 'text-[#6A38C2] font-semibold' : ''}`}>Home</Link>
+                  <Link to="/jobs" className={`hover:text-[#6A38C2] transition-colors whitespace-nowrap ${isActive('/jobs') ? 'text-[#6A38C2] font-semibold' : ''}`}>Jobs</Link>
+                  <Link to="/browse" className={`hover:text-[#6A38C2] transition-colors whitespace-nowrap ${isActive('/browse') ? 'text-[#6A38C2] font-semibold' : ''}`}>Browse</Link>
+                  <Link to="/ai-resume-scorer" className={`hover:text-[#6A38C2] transition-colors whitespace-nowrap ${isActive('/ai-resume-scorer') ? 'text-[#6A38C2] font-semibold' : ''}`}>AI Scorer</Link>
                 </>
               )
             }

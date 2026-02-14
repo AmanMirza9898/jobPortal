@@ -169,7 +169,7 @@ export const HeroSection = () => {
       {/* Main Content */}
       <div className="relative z-10 flex flex-col gap-5 my-10 max-w-4xl mx-auto px-4 text-center">
         <span className="mx-auto px-4 py-2 rounded-full bg-gray-100 dark:bg-white/5 font-medium tracking-wide shadow-sm border border-gray-200 dark:border-white/10 animate-fadeIn cursor-pointer hover:shadow-lg transition-all duration-300 bg-gradient-to-r from-[#F83002]/50 via-[#6A38C2]/50 to-[#F83002]/50 bg-size-[200%_auto] animate-gradient text-white">
-          <span className="font-bold drop-shadow-md">No. 1 Job Hunt Website</span>
+          <span className="font-bold drop-shadow-md">✨ New Feature: AI Resume Scorer Launched!</span>
         </span>
         <h1 className="text-4xl md:text-6xl font-black tracking-tight text-gray-900 dark:text-white leading-[1.1] mb-2">
           Search, Apply & <br /> Get Your <span className="text-[#6A38C2]">Dream Jobs</span>

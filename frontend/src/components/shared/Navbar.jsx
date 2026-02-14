@@ -146,69 +146,69 @@ const Navbar = () => {
 
       {/* MOBILE NAVBAR (Bottom Navigation) */}
       <div className="md:hidden fixed bottom-6 left-4 right-4 z-50">
-        <div className="bg-white/90 dark:bg-black/90 backdrop-blur-2xl text-gray-500 dark:text-gray-400 rounded-3xl shadow-[0_8px_32px_rgba(106,56,194,0.2)] flex justify-between items-center px-6 py-4 border border-purple-100 dark:border-purple-900/50">
+        <div className="bg-white/95 dark:bg-[#020817]/95 backdrop-blur-2xl text-gray-500 dark:text-gray-400 rounded-3xl shadow-[0_8px_32px_rgba(106,56,194,0.15)] grid grid-cols-6 items-center px-2 py-4 border border-purple-100 dark:border-purple-900/40">
           {
             user && user.role === 'recruiter' ? (
               <>
                 <Link to="/admin/companies" className={`flex flex-col items-center justify-center transition-all duration-300 ${isActive('/admin/companies') ? 'text-[#6A38C2] scale-105' : 'text-gray-500 dark:text-gray-400 hover:text-[#6A38C2]'}`}>
-                  <Building2 size={22} strokeWidth={isActive('/admin/companies') ? 2.5 : 2} />
-                  <span className={`text-[10px] mt-1 font-bold tracking-tight ${isActive('/admin/companies') ? 'text-[#6A38C2]' : ''}`}>Companies</span>
+                  <Building2 size={20} strokeWidth={isActive('/admin/companies') ? 2.5 : 2} />
+                  <span className={`text-[9px] mt-1 font-bold tracking-tighter ${isActive('/admin/companies') ? 'text-[#6A38C2]' : ''}`}>Companies</span>
                 </Link>
 
                 <Link to="/admin/jobs" className={`flex flex-col items-center justify-center transition-all duration-300 ${isActive('/admin/jobs') ? 'text-[#6A38C2] scale-105' : 'text-gray-500 dark:text-gray-400 hover:text-[#6A38C2]'}`}>
-                  <Briefcase size={22} strokeWidth={isActive('/admin/jobs') ? 2.5 : 2} />
-                  <span className={`text-[10px] mt-1 font-bold tracking-tight ${isActive('/admin/jobs') ? 'text-[#6A38C2]' : ''}`}>Jobs</span>
+                  <Briefcase size={20} strokeWidth={isActive('/admin/jobs') ? 2.5 : 2} />
+                  <span className={`text-[9px] mt-1 font-bold tracking-tighter ${isActive('/admin/jobs') ? 'text-[#6A38C2]' : ''}`}>Jobs</span>
                 </Link>
 
                 {/* Central Floating Action Button */}
-                <div className="relative -top-8 flex flex-col items-center">
-                  <Link to="/admin/jobs/create">
-                    <div className={`w-14 h-14 rounded-full flex items-center justify-center shadow-xl transition-all hover:scale-110 active:scale-95 ${isActive('/admin/jobs/create') ? 'bg-[#6A38C2] text-white ring-4 ring-purple-100 dark:ring-purple-900/30 shadow-purple-500/40' : 'bg-[#6A38C2] text-white border-4 border-white dark:border-neutral-900 shadow-purple-500/20'}`}>
-                      <Plus size={28} strokeWidth={3} />
+                <div className="flex flex-col items-center relative h-full">
+                  <Link to="/admin/jobs/create" className="absolute -top-7">
+                    <div className={`w-12 h-12 rounded-full flex items-center justify-center shadow-xl transition-all border-4 border-white dark:border-neutral-900 ${isActive('/admin/jobs/create') ? 'bg-[#6A38C2] text-white' : 'bg-[#6A38C2] text-white'}`}>
+                      <Plus size={24} strokeWidth={3} />
                     </div>
                   </Link>
-                  <span className="text-[10px] mt-2 font-bold text-[#6A38C2] uppercase tracking-widest whitespace-nowrap">Post Job</span>
+                  <span className="text-[9px] mt-7 font-bold text-[#6A38C2] uppercase tracking-tighter">Post Job</span>
                 </div>
 
                 <Link to="/admin/profile" className={`flex flex-col items-center justify-center transition-all duration-300 ${isActive('/admin/profile') ? 'text-[#6A38C2] scale-105' : 'text-gray-500 dark:text-gray-400 hover:text-[#6A38C2]'}`}>
-                  <User2 size={22} strokeWidth={isActive('/admin/profile') ? 2.5 : 2} />
-                  <span className={`text-[10px] mt-1 font-bold tracking-tight ${isActive('/admin/profile') ? 'text-[#6A38C2]' : ''}`}>Profile</span>
+                  <User2 size={20} strokeWidth={isActive('/admin/profile') ? 2.5 : 2} />
+                  <span className={`text-[9px] mt-1 font-bold tracking-tighter ${isActive('/admin/profile') ? 'text-[#6A38C2]' : ''}`}>Profile</span>
                 </Link>
 
-                <button onClick={logoutHandler} className="flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 hover:text-red-500 transition-all duration-300">
-                  <LogOut size={22} strokeWidth={2} />
-                  <span className="text-[10px] mt-1 font-bold tracking-tight">Logout</span>
+                <button onClick={logoutHandler} className="flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 hover:text-red-500 transition-all duration-300 col-span-2">
+                  <LogOut size={20} strokeWidth={2} />
+                  <span className="text-[9px] mt-1 font-bold tracking-tighter">Logout</span>
                 </button>
               </>
             ) : (
               <>
                 <Link to="/" className={`flex flex-col items-center justify-center transition-all duration-300 ${isActive('/') ? 'text-[#6A38C2] scale-105' : 'text-gray-500 dark:text-gray-400 hover:text-[#6A38C2]'}`}>
-                  <Home size={22} strokeWidth={isActive('/') ? 2.5 : 2} />
+                  <Home size={20} strokeWidth={isActive('/') ? 2.5 : 2} />
                   <span className={`text-[10px] mt-1 font-bold tracking-tight ${isActive('/') ? 'text-[#6A38C2]' : ''}`}>Home</span>
                 </Link>
 
                 <Link to="/jobs" className={`flex flex-col items-center justify-center transition-all duration-300 ${isActive('/jobs') ? 'text-[#6A38C2] scale-105' : 'text-gray-500 dark:text-gray-400 hover:text-[#6A38C2]'}`}>
-                  <Briefcase size={22} strokeWidth={isActive('/jobs') ? 2.5 : 2} />
+                  <Briefcase size={20} strokeWidth={isActive('/jobs') ? 2.5 : 2} />
                   <span className={`text-[10px] mt-1 font-bold tracking-tight ${isActive('/jobs') ? 'text-[#6A38C2]' : ''}`}>Jobs</span>
                 </Link>
 
-                {/* Central Floating Action Button */}
-                <div className="relative -top-8 flex flex-col items-center">
-                  <Link to="/browse">
-                    <div className={`w-14 h-14 rounded-full flex items-center justify-center shadow-xl transition-all hover:scale-110 active:scale-95 ${isActive('/browse') ? 'bg-[#6A38C2] text-white ring-4 ring-purple-100 dark:ring-purple-900/30 shadow-purple-500/40' : 'bg-[#6A38C2] text-white border-4 border-white dark:border-neutral-900 shadow-purple-500/20'}`}>
-                      <Compass size={28} strokeWidth={2.5} />
-                    </div>
-                  </Link>
-                  <span className="text-[10px] mt-2 font-bold text-[#6A38C2] uppercase tracking-widest whitespace-nowrap">Browse</span>
-                </div>
+                <Link to="/ai-resume-scorer" className={`flex flex-col items-center justify-center transition-all duration-300 ${isActive('/ai-resume-scorer') ? 'text-[#6A38C2] scale-105' : 'text-gray-500 dark:text-gray-400 hover:text-[#6A38C2]'}`}>
+                  <Sparkles size={20} strokeWidth={isActive('/ai-resume-scorer') ? 2.5 : 2} />
+                  <span className={`text-[10px] mt-1 font-bold tracking-tight ${isActive('/ai-resume-scorer') ? 'text-[#6A38C2]' : ''}`}>AI Scorer</span>
+                </Link>
+
+                <Link to="/browse" className={`flex flex-col items-center justify-center transition-all duration-300 ${isActive('/browse') ? 'text-[#6A38C2] scale-105' : 'text-gray-500 dark:text-gray-400 hover:text-[#6A38C2]'}`}>
+                  <Compass size={20} strokeWidth={isActive('/browse') ? 2.5 : 2} />
+                  <span className={`text-[10px] mt-1 font-bold tracking-tight ${isActive('/browse') ? 'text-[#6A38C2]' : ''}`}>Browse</span>
+                </Link>
 
                 <Link to={user ? (user.role === 'recruiter' ? "/admin/profile" : "/profile") : "/login"} className={`flex flex-col items-center justify-center transition-all duration-300 ${isActive('/profile') || isActive('/admin/profile') || isActive('/login') ? 'text-[#6A38C2] scale-105' : 'text-gray-500 dark:text-gray-400 hover:text-[#6A38C2]'}`}>
-                  <User2 size={22} strokeWidth={isActive('/profile') || isActive('/admin/profile') ? 2.5 : 2} />
+                  <User2 size={20} strokeWidth={isActive('/profile') || isActive('/admin/profile') ? 2.5 : 2} />
                   <span className={`text-[10px] mt-1 font-bold tracking-tight ${isActive('/profile') || isActive('/admin/profile') ? 'text-[#6A38C2]' : ''}`}>Profile</span>
                 </Link>
 
-                <button onClick={user ? logoutHandler : () => navigate('/login')} className="flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 hover:text-purple-500 transition-all duration-300">
-                  <LogOut size={22} strokeWidth={isActive('/login') ? 2.5 : 2} />
+                <button onClick={user ? logoutHandler : () => navigate('/login')} className="flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 hover:text-red-500 transition-all duration-300">
+                  <LogOut size={20} strokeWidth={2} />
                   <span className="text-[10px] mt-1 font-bold tracking-tight">{user ? "Logout" : "Login"}</span>
                 </button>
               </>

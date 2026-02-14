@@ -7,6 +7,7 @@ import userRoutes from './routes/user.route.js';
 import companyRoutes from './routes/company.route.js';
 import jobRoute from './routes/job.route.js';
 import applicationRoute from "./routes/application.route.js";
+import aiRoute from "./routes/ai.route.js";
 import path from 'path';
 dotenv.config({});
 const app = express();
@@ -21,7 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const corsOptions = {
-    origin: 'https://jobportal-1-wx8o.onrender.com',
+    origin: ['https://jobportal-1-wx8o.onrender.com', 'http://localhost:5173'],
     credentials: true,
 }
 
@@ -31,7 +32,8 @@ app.use(cors(corsOptions));
 app.use('/api/users', userRoutes);
 app.use('/api/company', companyRoutes);
 app.use('/api/job', jobRoute);
-app.use('/api/application', applicationRoute)
+app.use('/api/application', applicationRoute);
+app.use('/api/ai', aiRoute);
 
 app.use(express.static(path.join(__dirname, 'frontend/dist')));
 

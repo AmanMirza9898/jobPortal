@@ -18,6 +18,7 @@ import EditJob from './components/admin/EditJob'
 import { Applicants } from './components/admin/Applicants'
 import AdminProfile from './components/admin/AdminProfile'
 import NotFound from './components/NotFound';
+import ResumeScorer from './components/ResumeScorer';
 
 
 const appRouter = createBrowserRouter([
@@ -52,6 +53,10 @@ const appRouter = createBrowserRouter([
         element: <JobDescription />
       },
 
+      {
+        path: "/ai-resume-scorer",
+        element: <ProtectedRoute role="student"><ResumeScorer /></ProtectedRoute>
+      },
       {
         path: "/profile",
         element: <ProtectedRoute role="student"><Profile /></ProtectedRoute>

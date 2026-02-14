@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
 import { Avatar, AvatarImage } from "../ui/avatar";
-import { LogOut, User2, Home, Briefcase, Compass, Building2, Plus } from "lucide-react";
+import { LogOut, User2, Home, Briefcase, Compass, Building2, Plus, Sparkles } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "@/redux/authSlice";
 import { useNavigate } from "react-router-dom";
@@ -64,6 +64,7 @@ const Navbar = () => {
                   <Link to="/" className={`hover:text-[#6A38C2] transition-colors ${isActive('/') ? 'text-[#6A38C2] font-semibold' : ''}`}>Home</Link>
                   <Link to="/jobs" className={`hover:text-[#6A38C2] transition-colors ${isActive('/jobs') ? 'text-[#6A38C2] font-semibold' : ''}`}>Jobs</Link>
                   <Link to="/browse" className={`hover:text-[#6A38C2] transition-colors ${isActive('/browse') ? 'text-[#6A38C2] font-semibold' : ''}`}>Browse</Link>
+                  <Link to="/ai-resume-scorer" className={`hover:text-[#6A38C2] transition-colors ${isActive('/ai-resume-scorer') ? 'text-[#6A38C2] font-semibold' : ''}`}>AI Scorer</Link>
                 </>
               )
             }
@@ -116,6 +117,15 @@ const Navbar = () => {
                           <Link to={user.role === 'recruiter' ? "/admin/profile" : "/profile"} onClick={() => setOpen(false)} className="flex items-center gap-3 p-2 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl transition-colors text-gray-700 dark:text-gray-200 outline-none focus:outline-none border-none">
                             <div className="bg-gray-100 dark:bg-gray-700 p-2 rounded-full"><User2 size={18} /></div>
                             <span className="font-medium">View Profile</span>
+                          </Link>
+                        )
+                      }
+
+                      {
+                        user && user.role === 'student' && (
+                          <Link to="/ai-resume-scorer" onClick={() => setOpen(false)} className="flex items-center gap-3 p-2 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl transition-colors text-gray-700 dark:text-gray-200 outline-none focus:outline-none border-none">
+                            <div className="bg-purple-100 dark:bg-purple-900/30 p-2 rounded-full text-purple-600"><Sparkles size={18} /></div>
+                            <span className="font-medium">AI Resume Scorer</span>
                           </Link>
                         )
                       }

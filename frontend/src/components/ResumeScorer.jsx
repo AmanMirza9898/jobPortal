@@ -128,7 +128,7 @@ const ResumeScorer = () => {
                 >
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 text-xs font-bold uppercase tracking-wider mb-4 border border-purple-200/50 dark:border-purple-800/30">
                         <Sparkles size={14} />
-                        Powered by Gemini AI 2.5
+                        AI Resume Insight Scorer
                     </div>
                     <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight dark:text-white">
                         AI Resume <span className="bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">Insight</span> Scorer

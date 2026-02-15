@@ -9,11 +9,12 @@ import { toast } from 'sonner'
 import { useNavigate } from 'react-router-dom'
 import { Loader2, ArrowLeft, Building2, ChevronDown } from 'lucide-react'
 import useGetAllCompanies from '@/hooks/useGetAllCompanies'
+import useFormAutoSave from '@/hooks/useFormAutoSave'
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 
 const PostJob = () => {
     useGetAllCompanies();
-    const [input, setInput] = useState({
+    const [input, setInput, clearStorage] = useFormAutoSave("admin-post-job", {
         title: "",
         description: "",
         salary: "",
@@ -50,6 +51,7 @@ const PostJob = () => {
             });
             if (res.data.success) {
                 toast.success(res.data.message);
+                clearStorage();
                 navigate("/admin/jobs");
             }
         } catch (error) {

@@ -120,7 +120,7 @@ const ResumeScorer = () => {
                 <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-200/40 dark:bg-blue-900/10 rounded-full blur-[120px]" />
             </div>
 
-            <div className="max-w-6xl mx-auto px-4 md:px-8">
+            <div className="max-w-6xl mx-auto px-5 md:px-8">
                 <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -202,7 +202,7 @@ const ResumeScorer = () => {
                                     {/* Score Card */}
                                     <motion.div
                                         variants={itemVariants}
-                                        className="lg:col-span-4 p-6 md:p-10 rounded-[2.5rem] bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 flex flex-col items-center justify-center text-center shadow-sm"
+                                        className="lg:col-span-4 p-5 md:p-10 rounded-[2.5rem] bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 flex flex-col items-center justify-center text-center shadow-sm w-full box-border"
                                     >
                                         <CircularProgress score={result.score} />
                                         <div className="mt-8">
@@ -216,7 +216,7 @@ const ResumeScorer = () => {
                                     {/* Summary Card */}
                                     <motion.div
                                         variants={itemVariants}
-                                        className="lg:col-span-8 p-6 md:p-10 rounded-[2.5rem] bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-sm relative overflow-hidden"
+                                        className="lg:col-span-8 p-5 md:p-10 rounded-[2.5rem] bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-sm relative overflow-hidden w-full box-border"
                                     >
                                         <div className="absolute top-0 right-0 p-4">
                                             <CheckCircle2 className="text-green-500" size={32} />
@@ -232,7 +232,7 @@ const ResumeScorer = () => {
                                     {/* Tips Card */}
                                     <motion.div
                                         variants={itemVariants}
-                                        className="p-8 rounded-[2.5rem] bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-sm"
+                                        className="p-6 md:p-10 rounded-[2.5rem] bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-sm w-full box-border"
                                     >
                                         <div className="flex items-center gap-4 mb-8">
                                             <div className="w-12 h-12 rounded-2xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400">

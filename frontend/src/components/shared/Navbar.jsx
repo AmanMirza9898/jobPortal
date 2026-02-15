@@ -146,18 +146,18 @@ const Navbar = () => {
 
       {/* MOBILE NAVBAR (Bottom Navigation) */}
       <div className="md:hidden fixed bottom-6 left-4 right-4 z-50">
-        <div className="bg-white/95 dark:bg-[#020817]/95 backdrop-blur-2xl text-gray-500 dark:text-gray-400 rounded-3xl shadow-[0_8px_32px_rgba(106,56,194,0.15)] grid grid-cols-6 items-center px-2 py-4 border border-purple-100 dark:border-purple-900/40">
+        <div className={`bg-white/95 dark:bg-[#020817]/95 backdrop-blur-2xl text-gray-500 dark:text-gray-400 rounded-3xl shadow-[0_8px_32px_rgba(106,56,194,0.15)] grid ${user?.role === 'recruiter' ? 'grid-cols-5' : 'grid-cols-6'} items-center px-2 py-4 border border-purple-100 dark:border-purple-900/40`}>
           {
             user && user.role === 'recruiter' ? (
               <>
                 <Link to="/admin/companies" className={`flex flex-col items-center justify-center transition-all duration-300 ${isActive('/admin/companies') ? 'text-[#6A38C2] scale-105' : 'text-gray-500 dark:text-gray-400 hover:text-[#6A38C2]'}`}>
                   <Building2 size={20} strokeWidth={isActive('/admin/companies') ? 2.5 : 2} />
-                  <span className={`text-[9px] mt-1 font-bold tracking-tighter ${isActive('/admin/companies') ? 'text-[#6A38C2]' : ''}`}>Companies</span>
+                  <span className={`text-[10px] mt-1 font-bold tracking-tight ${isActive('/admin/companies') ? 'text-[#6A38C2]' : ''}`}>Companies</span>
                 </Link>
 
                 <Link to="/admin/jobs" className={`flex flex-col items-center justify-center transition-all duration-300 ${isActive('/admin/jobs') ? 'text-[#6A38C2] scale-105' : 'text-gray-500 dark:text-gray-400 hover:text-[#6A38C2]'}`}>
                   <Briefcase size={20} strokeWidth={isActive('/admin/jobs') ? 2.5 : 2} />
-                  <span className={`text-[9px] mt-1 font-bold tracking-tighter ${isActive('/admin/jobs') ? 'text-[#6A38C2]' : ''}`}>Jobs</span>
+                  <span className={`text-[10px] mt-1 font-bold tracking-tight ${isActive('/admin/jobs') ? 'text-[#6A38C2]' : ''}`}>Jobs</span>
                 </Link>
 
                 {/* Central Floating Action Button */}
@@ -167,17 +167,17 @@ const Navbar = () => {
                       <Plus size={24} strokeWidth={3} />
                     </div>
                   </Link>
-                  <span className="text-[9px] mt-7 font-bold text-[#6A38C2] uppercase tracking-tighter">Post Job</span>
+                  <span className="text-[10px] mt-7 font-bold text-[#6A38C2] uppercase tracking-tight">Post Job</span>
                 </div>
 
                 <Link to="/admin/profile" className={`flex flex-col items-center justify-center transition-all duration-300 ${isActive('/admin/profile') ? 'text-[#6A38C2] scale-105' : 'text-gray-500 dark:text-gray-400 hover:text-[#6A38C2]'}`}>
                   <User2 size={20} strokeWidth={isActive('/admin/profile') ? 2.5 : 2} />
-                  <span className={`text-[9px] mt-1 font-bold tracking-tighter ${isActive('/admin/profile') ? 'text-[#6A38C2]' : ''}`}>Profile</span>
+                  <span className={`text-[10px] mt-1 font-bold tracking-tight ${isActive('/admin/profile') ? 'text-[#6A38C2]' : ''}`}>Profile</span>
                 </Link>
 
-                <button onClick={logoutHandler} className="flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 hover:text-red-500 transition-all duration-300 col-span-2">
+                <button onClick={logoutHandler} className="flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 hover:text-red-500 transition-all duration-300">
                   <LogOut size={20} strokeWidth={2} />
-                  <span className="text-[9px] mt-1 font-bold tracking-tighter">Logout</span>
+                  <span className="text-[10px] mt-1 font-bold tracking-tight">Logout</span>
                 </button>
               </>
             ) : (

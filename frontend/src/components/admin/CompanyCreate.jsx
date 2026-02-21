@@ -8,15 +8,17 @@ import { COMPANY_API_END_POINT } from '../../utils/constant'
 import { toast } from 'sonner'
 import { useDispatch } from 'react-redux'
 import { setSingleCompany } from '@/redux/companySlice'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Loader2 } from 'lucide-react'
 
 export const CompanyCreate = () => {
     const navigate = useNavigate();
     const [companyName, setCompanyName] = useState('');
+    const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
 
     const RegisterNewCompany = async () => {
         try {
+            setLoading(true);
             const res = await axios.post(`${COMPANY_API_END_POINT}/register`, { companyName }, {
                 headers: {
                     "Content-Type": "application/json",
@@ -34,6 +36,9 @@ export const CompanyCreate = () => {
         }
         catch (err) {
             console.log(err);
+        }
+        finally {
+            setLoading(false);
         }
     }
     return (
@@ -61,7 +66,15 @@ export const CompanyCreate = () => {
 
                 <div className='flex flex-col sm:flex-row items-center gap-4 mt-8 ml-0 sm:ml-14 w-full sm:w-auto'>
                     <Button variant='outline' className='rounded-xl border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 font-medium w-full sm:w-auto hover:text-gray-900 dark:hover:text-white transition-colors h-11 order-2 sm:order-1' onClick={() => navigate("/admin/companies")}>Cancel</Button>
-                    <Button className='rounded-xl bg-[#6A38C2] hover:bg-[#5b30a6] text-white shadow-lg hover:shadow-purple-500/20 font-medium w-full sm:w-auto transition-all h-11 order-1 sm:order-2' onClick={RegisterNewCompany}>Continue</Button>
+                    {
+                        loading ? (
+                            <Button className='rounded-xl bg-[#6A38C2] hover:bg-[#5b30a6] text-white shadow-lg hover:shadow-purple-500/20 font-medium w-full sm:w-auto transition-all h-11 order-1 sm:order-2 px-8'>
+                                <Loader2 className='mr-2 h-4 w-4 animate-spin' /> Please wait
+                            </Button>
+                        ) : (
+                            <Button className='rounded-xl bg-[#6A38C2] hover:bg-[#5b30a6] text-white shadow-lg hover:shadow-purple-500/20 font-medium w-full sm:w-auto transition-all h-11 order-1 sm:order-2 px-8' onClick={RegisterNewCompany}>Continue</Button>
+                        )
+                    }
                 </div>
             </div>
         </div>

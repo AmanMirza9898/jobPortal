@@ -1,5 +1,6 @@
 
 import Job from "../models/job.model.js";
+import { Company } from "../models/company.model.js";
 
 // Admin Post krega job
 export const PostJob = async (req, res) => {
@@ -12,6 +13,22 @@ export const PostJob = async (req, res) => {
                 success: false
             })
         };
+
+        // Check if companyId belongs to the user
+        const company = await Company.findById(companyId);
+        if (!company) {
+            return res.status(404).json({
+                message: "Company not found",
+                success: false
+            })
+        }
+        if (company.UserId.toString() !== userId) {
+            return res.status(403).json({
+                message: "Unauthorized: You cannot post a job for this company.",
+                success: false
+            })
+        }
+
         const job = await Job.create({
             title,
             description,
@@ -56,7 +73,23 @@ export const updateJob = async (req, res) => {
             company: companyId
         };
 
-        const job = await Job.findByIdAndUpdate(jobId, updatedData, { new: true });
+        const job = await Job.findById(jobId);
+        if (!job) {
+            return res.status(404).json({
+                message: "Job not found.",
+                success: false
+            })
+        }
+
+        // Ownership check
+        if (job.created_by.toString() !== req.id) {
+            return res.status(403).json({
+                message: "Unauthorized: You cannot update this job.",
+                success: false
+            })
+        }
+
+        const updatedJob = await Job.findByIdAndUpdate(jobId, updatedData, { new: true });
 
         if (!job) {
             return res.status(404).json({
@@ -147,15 +180,15 @@ export const getJobById = async (req, res) => {
 export const getAdminJob = async (req, res) => {
     try {
         const adminId = req.id;
-        console.log("getAdminJob: adminId:", adminId);
 
-        // Log all jobs to see their created_by field
-        const allJobsRaw = await Job.find({});
-        console.log("ALL JOBS IN DB (created_by list):", allJobsRaw.map(j => j.created_by));
+        // Find companies belonging to the admin
+        const companies = await Company.find({ UserId: adminId });
+        const companyIds = companies.map(c => c._id);
 
-        const jobs = await Job.find({ created_by: adminId }).populate({
+        const jobs = await Job.find({ company: { $in: companyIds } }).populate({
             path: 'company'
         });
+
         if (!jobs) {
             return res.status(404).json({
                 message: "Jobs not found",

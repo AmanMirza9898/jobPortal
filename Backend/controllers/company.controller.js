@@ -48,7 +48,7 @@ export const registerCompany = async (req, res) => {
 
         company = await Company.create({
             name: companyName,
-            UserId: req.userId,
+            UserId: req.id,
         })
 
         return res.status(201).json({
@@ -71,8 +71,8 @@ export const registerCompany = async (req, res) => {
 export const getCompany = async (req, res) => {
 
     try {
-        const userId = req.userId;
-        const company = await Company.find({ userId });
+        const userId = req.id;
+        const company = await Company.find({ UserId: userId });
         if (!company) {
             return res.status(404).json({
                 message: "Company not found",
@@ -131,6 +131,14 @@ export const updateCompany = async (req, res) => {
             return res.status(404).json({ message: "Company not found", success: false });
         }
 
+        // Ownership check
+        if (existingCompany.UserId.toString() !== req.id) {
+            return res.status(403).json({
+                message: "Unauthorized: You cannot update this company.",
+                success: false
+            });
+        }
+
         let logo;
         if (file) {
             const fileUri = getDataUri(file);
@@ -181,6 +189,14 @@ export const deleteCompany = async (req, res) => {
             return res.status(404).json({
                 message: "Company not found",
                 success: false,
+            });
+        }
+
+        // Ownership check
+        if (company.UserId.toString() !== req.id) {
+            return res.status(403).json({
+                message: "Unauthorized: You cannot delete this company.",
+                success: false
             });
         }
 

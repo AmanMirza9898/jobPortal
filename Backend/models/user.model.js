@@ -38,8 +38,16 @@ const userSchema = new mongoose.Schema(
       resume: { type: String}, //URL to the resume file
       resumeOriginalName: { type: String} ,
       company: { type:mongoose.Schema.Types.ObjectId, ref: 'Company'},
-      profilePhoto: { type: String , default: ""}
+      profilePhoto: { type: String, default: "" },
     },
+    resetPasswordToken: String,
+    resetPasswordExpire: Date,
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: String,
+    verificationTokenExpire: Date,
   },
   { timestamps: true }
 );

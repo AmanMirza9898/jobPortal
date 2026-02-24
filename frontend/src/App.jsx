@@ -3,6 +3,8 @@ import './App.css'
 import Layout from './components/Layout' // Layout ko import karein
 import Login from './components/Auth/Login'
 import Signup from './components/Auth/Signup'
+import ForgotPassword from './components/Auth/ForgotPassword'
+import ResetPassword from './components/Auth/ResetPassword'
 import Home from './components/Home'
 import { Jobs } from "./components/Jobs"
 import { Jobs as AdminJobs } from "./components/admin/Jobs"
@@ -42,6 +44,14 @@ const appRouter = createBrowserRouter([
       {
         path: "/signup",
         element: <Signup />
+      },
+      {
+        path: "/forgot-password/email",
+        element: <ForgotPassword />
+      },
+      {
+        path: "/reset-password/:token",
+        element: <ResetPassword />
       },
       {
         path: "/browse",

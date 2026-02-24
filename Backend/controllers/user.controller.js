@@ -83,7 +83,8 @@ export const register = async (req, res) => {
         });
 
         // --- 3. Send Verification Email ---
-        const verificationUrl = `http://localhost:5173/verify-email/${verificationToken}`;
+        const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+        const verificationUrl = `${frontendUrl}/verify-email/${verificationToken}`;
         const message = `Bhai, aapka JobSync account register ho gaya hai. Account activate karne ke liye niche diye gaye link par click karein:\n\n${verificationUrl}\n\nYe link 24 ghante tak valid rahega.`;
 
         try {
@@ -305,7 +306,8 @@ export const forgotPassword = async (req, res) => {
         await user.save();
 
         // Create reset URL
-        const resetUrl = `http://localhost:5000/reset-password/${resetToken}`;
+        const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+        const resetUrl = `${frontendUrl}/reset-password/${resetToken}`;
 
         const message = `Bhai, aapka password reset karne ka link ye raha. Ye link sirf 10 minute tak valid rahega:\n\n${resetUrl}\n\nAgar aapne ye request nahi ki hai, toh please ise ignore karein.`;
 

@@ -112,6 +112,11 @@ const Login = () => {
                       {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                     </button>
                   </div>
+                  <div className="flex justify-end mt-1">
+                    <Link to="/forgot-password/email" className="text-xs text-blue-600 hover:underline font-medium">
+                      Forgot Password?
+                    </Link>
+                  </div>
                 </div>
 
                 <div className="pt-2">

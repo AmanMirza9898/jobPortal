@@ -1,5 +1,5 @@
 import express from 'express';
-import { register, login, updateProfile, logout } from '../controllers/user.controller.js';
+import { register, login, updateProfile, logout, forgotPassword, resetPassword, verifyEmail } from '../controllers/user.controller.js';
 import isAuthenticated from '../middlewares/isAuthenticated.js';
 import { singleUpload, multipleUpload } from '../middlewares/multer.js';
 
@@ -10,5 +10,9 @@ router.route('/register').post(singleUpload, register);
 router.route('/login').post(login);
 router.route('/logout').get(logout);
 router.route('/profile/update').post(isAuthenticated, multipleUpload, updateProfile);
+
+router.route('/password/forgot').post(forgotPassword);
+router.route('/password/reset/:token').post(resetPassword);
+router.route('/verify-email/:token').get(verifyEmail);
 
 export default router;

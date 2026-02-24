@@ -4,6 +4,9 @@ import jwt from "jsonwebtoken";
 import cloudinary from "../utils/cloudinary.js";
 import { Readable } from "stream"; // Stream import zaroori hai
 import getDataUri from "../utils/datauri.js";
+import crypto from "crypto";
+import sendEmail from "../utils/email.js";
+import disposableDomains from "disposable-email-domains" with { type: "json" };
 
 // --- Helper for Cloudinary Deletion ---
 const deleteFromCloudinary = async (url) => {
@@ -39,6 +42,15 @@ export const register = async (req, res) => {
             return res.status(400).json({ message: "All fields are required", success: false });
         }
 
+        // --- 1. Temp Mail Check ---
+        const domain = email.split('@')[1];
+        if (disposableDomains.includes(domain)) {
+            return res.status(400).json({ 
+                message: "Aapka email address register karne ke liye valid nahi hai. Please ek permanent email (jaise Gmail, Yahoo) use karein.", 
+                success: false 
+            });
+        }
+
         const file = req.file;
         let cloudResponse;
 
@@ -53,7 +65,11 @@ export const register = async (req, res) => {
         }
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        await User.create({
+        // --- 2. Generate Verification Token ---
+        const verificationToken = crypto.randomBytes(20).toString("hex");
+        const verificationTokenExpire = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
+
+        const user = await User.create({
             fullname,
             email,
             phoneNumber,
@@ -61,10 +77,33 @@ export const register = async (req, res) => {
             role,
             profile: {
                 profilePhoto: cloudResponse ? cloudResponse.secure_url : ""
-            }
+            },
+            verificationToken,
+            verificationTokenExpire
         });
 
-        return res.status(201).json({ message: "User registered successfully", success: true });
+        // --- 3. Send Verification Email ---
+        const verificationUrl = `http://localhost:5173/verify-email/${verificationToken}`;
+        const message = `Bhai, aapka JobSync account register ho gaya hai. Account activate karne ke liye niche diye gaye link par click karein:\n\n${verificationUrl}\n\nYe link 24 ghante tak valid rahega.`;
+
+        try {
+            await sendEmail({
+                email: user.email,
+                subject: "Account Verification - JobSync",
+                message,
+            });
+
+            return res.status(201).json({ 
+                message: "Registration successful! Please check your email to verify your account.", 
+                success: true 
+            });
+        } catch (emailErr) {
+            console.error("Verification email failed:", emailErr);
+            return res.status(201).json({ 
+                message: "User registered, but verification email could not be sent. Please contact support.", 
+                success: true 
+            });
+        }
     } catch (err) {
         console.log(err);
         return res.status(500).json({ message: "Registration failed", success: false });
@@ -88,6 +127,14 @@ export const login = async (req, res) => {
         }
         if (role !== user.role) {
             return res.status(400).json({ message: "Role mismatch", success: false });
+        }
+
+        // --- Check Verification ---
+        if (!user.isVerified) {
+            return res.status(401).json({ 
+                message: "Aapka account abhi verified nahi hai. Please apna email check karein aur link par click karke activate karein.", 
+                success: false 
+            });
         }
         const tokenData = { userId: user._id };
         const token = await jwt.sign(tokenData, process.env.SECRET_KEY, { expiresIn: "1d" });
@@ -230,5 +277,119 @@ export const updateProfile = async (req, res) => {
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: "Profile update failed", success: false });
+    }
+};
+
+// --- FORGOT PASSWORD ---
+export const forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found with this email", success: false });
+        }
+
+        // Generate reset token
+        const resetToken = crypto.randomBytes(20).toString("hex");
+
+        // Hash and set to user model
+        user.resetPasswordToken = crypto
+            .createHash("sha256")
+            .update(resetToken)
+            .digest("hex");
+
+        // Set expire (10 mins)
+        user.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
+
+        await user.save();
+
+        // Create reset URL
+        const resetUrl = `http://localhost:5000/reset-password/${resetToken}`;
+
+        const message = `Bhai, aapka password reset karne ka link ye raha. Ye link sirf 10 minute tak valid rahega:\n\n${resetUrl}\n\nAgar aapne ye request nahi ki hai, toh please ise ignore karein.`;
+
+        try {
+            await sendEmail({
+                email: user.email,
+                subject: "Password Reset Request - JobSync",
+                message,
+            });
+
+            res.status(200).json({ message: `Email sent to ${user.email}`, success: true });
+        } catch (err) {
+            user.resetPasswordToken = undefined;
+            user.resetPasswordExpire = undefined;
+            await user.save();
+
+            return res.status(500).json({ message: "Email could not be sent", success: false });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Internal server error", success: false });
+    }
+};
+
+// --- RESET PASSWORD ---
+export const resetPassword = async (req, res) => {
+    try {
+        // Hash token from params
+        const resetPasswordToken = crypto
+            .createHash("sha256")
+            .update(req.params.token)
+            .digest("hex");
+
+        const user = await User.findOne({
+            resetPasswordToken,
+            resetPasswordExpire: { $gt: Date.now() },
+        });
+
+        if (!user) {
+            return res.status(400).json({ message: "Invalid or expired reset token", success: false });
+        }
+
+        const { password } = req.body;
+        if (!password) {
+            return res.status(400).json({ message: "Password is required", success: false });
+        }
+
+        // Hash new password
+        user.password = await bcrypt.hash(password, 10);
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpire = undefined;
+
+        await user.save();
+
+        res.status(200).json({ message: "Password reset successfully", success: true });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Internal server error", success: false });
+    }
+};
+
+// --- VERIFY EMAIL ---
+export const verifyEmail = async (req, res) => {
+    try {
+        const { token } = req.params;
+
+        const user = await User.findOne({
+            verificationToken: token,
+            verificationTokenExpire: { $gt: Date.now() },
+        });
+
+        if (!user) {
+            return res.status(400).json({ message: "Invalid or expired verification token", success: false });
+        }
+
+        user.isVerified = true;
+        user.verificationToken = undefined;
+        user.verificationTokenExpire = undefined;
+
+        await user.save();
+
+        res.status(200).json({ message: "Account verified successfully! You can now login.", success: true });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Verification failed", success: false });
     }
 };

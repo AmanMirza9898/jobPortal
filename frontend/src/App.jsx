@@ -18,6 +18,7 @@ import { CompanySetup } from './components/admin/CompanySetup'
 import PostJob from './components/admin/PostJob'
 import EditJob from './components/admin/EditJob'
 import { Applicants } from './components/admin/Applicants'
+import AllApplicants from './components/admin/AllApplicants'
 import AdminProfile from './components/admin/AdminProfile'
 import NotFound from './components/NotFound';
 import ResumeScorer from './components/ResumeScorer';
@@ -103,6 +104,10 @@ const appRouter = createBrowserRouter([
       {
         path: "jobs",
         element: <AdminJobs />
+      },
+      {
+        path: "applicants",
+        element: <AllApplicants />
       },
       {
         path: "jobs/create",

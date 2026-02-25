@@ -4,6 +4,7 @@ import {
     LayoutDashboard, 
     Building2, 
     Briefcase, 
+    Users,
     UserCircle, 
     LogOut,
     ChevronRight,
@@ -44,6 +45,7 @@ const AdminSidebar = () => {
         { icon: <LayoutDashboard size={20} />, label: "Dashboard", path: "/admin/dashboard" },
         { icon: <Building2 size={20} />, label: "Companies", path: "/admin/companies" },
         { icon: <Briefcase size={20} />, label: "Jobs", path: "/admin/jobs" },
+        { icon: <Users size={20} />, label: "Applicants", path: "/admin/applicants" },
         { icon: <UserCircle size={20} />, label: "Profile", path: "/admin/profile" },
     ];
 

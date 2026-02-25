@@ -16,8 +16,9 @@ import { toast } from 'sonner';
 const shortlistingStatus = ["Accepted", "Rejected"];
 
 
-const ApplicantsTable = () => {
-    const { applications } = useSelector((store) => store.application);
+const ApplicantsTable = ({ applications: propApplications }) => {
+    const { applications: reduxApplications } = useSelector((store) => store.application);
+    const applications = propApplications || reduxApplications;
     const dispatch = useDispatch();
     const [openReject, setOpenReject] = React.useState(false);
     const [openAccept, setOpenAccept] = React.useState(false);

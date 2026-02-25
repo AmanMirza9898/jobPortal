@@ -1,6 +1,7 @@
 import Application from "../models/application.model.js";
-  import Job from "../models/job.model.js";
-  import sendEmail from "../utils/email.js";
+import Job from "../models/job.model.js";
+import { Company } from "../models/company.model.js";
+import sendEmail from "../utils/email.js";
 
   export const applyJob = async (req, res) => {
     try {
@@ -211,5 +212,41 @@ import Application from "../models/application.model.js";
     }
     catch (err) {
       console.log(err);
+    }
+  }
+
+  export const getRecruiterApplicants = async (req, res) => {
+    try {
+      const adminId = req.id;
+
+      // Find companies belonging to the admin
+      const companies = await Company.find({ UserId: adminId });
+      const companyIds = companies.map(c => c._id);
+
+      // Find jobs associated with these companies
+      const jobs = await Job.find({ company: { $in: companyIds } });
+      const jobIds = jobs.map(j => j._id);
+
+      // Find all applications for these jobs
+      const applications = await Application.find({ job: { $in: jobIds } })
+        .populate({
+          path: 'job',
+          populate: {
+            path: 'company'
+          }
+        })
+        .populate('applicant')
+        .sort({ createdAt: -1 });
+
+      return res.status(200).json({
+        applications,
+        success: true
+      })
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({
+        message: "Internal server error",
+        success: false
+      })
     }
   }

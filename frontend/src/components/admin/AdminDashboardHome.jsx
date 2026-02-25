@@ -6,13 +6,15 @@ import {
     Users, 
     TrendingUp,
     ArrowUpRight,
-    Clock
+    Clock,
+    Search
 } from 'lucide-react';
+import { useState } from 'react';
 import useGetAllAdminJobs from '@/hooks/useGetAllAdminJobs';
 import useGetAllCompanies from '@/hooks/useGetAllCompanies';
 
 const StatCard = ({ icon, label, value, color, description }) => (
-    <div className="bg-white dark:bg-[#020817] p-8 rounded-[2rem] border border-gray-100 dark:border-white/10 shadow-sm hover:shadow-md transition-all duration-300 group">
+    <div className="bg-white dark:bg-[#020817] p-8 rounded-[2rem] border border-gray-100 dark:border-white/10 shadow-md hover:shadow-xl transition-all duration-300 group">
         <div className="flex justify-between items-start mb-6">
             <div className={`w-12 h-12 rounded-full border border-gray-100 dark:border-white/10 flex items-center justify-center bg-gray-50/50 dark:bg-white/5 group-hover:bg-white dark:group-hover:bg-white/10 transition-colors`}>
                 {React.cloneElement(icon, { 
@@ -43,6 +45,7 @@ const AdminDashboardHome = () => {
     const { allAdminJobs } = useSelector(store => store.job);
     const { companies } = useSelector(store => store.company);
     const { user } = useSelector(store => store.auth);
+    const [searchQuery, setSearchQuery] = useState('');
 
     // Dynamic stats calculation
     const totalApplications = allAdminJobs?.reduce((acc, job) => acc + (job.applications?.length || 0), 0) || 0;
@@ -76,7 +79,7 @@ const AdminDashboardHome = () => {
     const firstName = user?.fullname ? user.fullname.split(' ')[0] : 'Recruiter';
 
     return (
-        <div className="space-y-10 animate-in fade-in duration-500 max-w-6xl mx-auto">
+        <div className="space-y-10 animate-in fade-in duration-500 max-w-6xl mx-auto p-4 bg-gray-50/30 dark:bg-transparent rounded-[3rem]">
             {/* Header Section */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-2">
                 <div>
@@ -86,15 +89,6 @@ const AdminDashboardHome = () => {
                     <p className="text-gray-500 dark:text-gray-400 font-medium text-base mt-1">
                         Here is the latest summary of your recruitment pipeline.
                     </p>
-                </div>
-                <div className="bg-white dark:bg-[#020817] px-4 py-3 rounded-2xl border border-gray-100 dark:border-white/10 shadow-sm flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gray-50 dark:bg-white/5 flex items-center justify-center text-purple-600 border border-gray-100 dark:border-white/10">
-                        <Clock size={14} />
-                    </div>
-                    <div>
-                        <p className="text-[11px] font-semibold text-gray-900 dark:text-white">Live Data</p>
-                        <p className="text-[10px] text-gray-400 font-medium">Updated just now</p>
-                    </div>
                 </div>
             </div>
 
@@ -106,20 +100,30 @@ const AdminDashboardHome = () => {
             </div>
 
             {/* Recent Activity Section */}
-            <div className="bg-white dark:bg-[#020817] p-8 rounded-[2rem] border border-gray-100 dark:border-white/10 shadow-sm">
-                <div className="flex justify-between items-center mb-8 border-b border-gray-50 dark:border-white/5 pb-6">
+            <div className="bg-white dark:bg-[#020817] p-8 rounded-[2rem] border border-gray-100 dark:border-white/10 shadow-lg mb-8">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 border-b border-gray-50 dark:border-white/5 pb-6 gap-4">
                     <div>
                         <h2 className="text-xl font-semibold text-gray-900 dark:text-white tracking-tight">Recent Job Listings</h2>
                         <p className="text-sm text-gray-400 font-medium mt-1">Manage your most recently posted opportunities</p>
                     </div>
-                    <button className="text-sm font-semibold text-purple-600 hover:text-purple-700 transition-colors uppercase tracking-wider text-[11px] px-4 py-2 bg-purple-50 dark:bg-purple-900/10 rounded-xl">
-                        View All
-                    </button>
+                    <div className="relative w-full md:w-72">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                        <input
+                            type="text"
+                            placeholder="Search jobs..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 transition-all text-gray-900 dark:text-white"
+                        />
+                    </div>
                 </div>
                 
                 <div className="space-y-3">
                     {allAdminJobs?.length > 0 ? (
-                        allAdminJobs.slice(0, 5).map((job, index) => (
+                        allAdminJobs
+                            .filter(job => job.title.toLowerCase().includes(searchQuery.toLowerCase()))
+                            .slice(0, 5)
+                            .map((job, index) => (
                             <div key={index} className="flex items-center justify-between p-5 rounded-2xl hover:bg-gray-50 dark:hover:bg-white/5 transition-all group border border-gray-50 dark:border-white/5 hover:border-purple-100 dark:hover:border-purple-900/20">
                                 <div className="flex items-center gap-6">
                                     <div className="w-11 h-11 rounded-full bg-gray-100 dark:bg-white/5 flex items-center justify-center text-gray-400 font-semibold text-lg border border-gray-200 dark:border-white/10 group-hover:border-purple-200 dark:group-hover:border-purple-900/30 group-hover:text-purple-600 transition-all">

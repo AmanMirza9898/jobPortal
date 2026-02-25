@@ -5,10 +5,11 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const sendEmail = async (options) => {
     try {
         const { data, error } = await resend.emails.send({
-            from: `JobSyncc <onboarding@resend.dev>`, // Default Resend domain if not fully verified, or use verified domain
+            from: `JobSyncc <noreply@jobsyncc.com>`, 
             to: [options.email],
+            replyTo: process.env.EMAIL_USER,
             subject: options.subject,
-            html: options.message, // Use 'html' for styled emails, or 'text' for plain text
+            html: options.message, 
         });
 
         if (error) {

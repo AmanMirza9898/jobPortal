@@ -6,6 +6,11 @@ const companySlice = createSlice({
         singleCompany: null,
         companies:[],
         searchCompanyByText:"",
+        pagination: {
+            totalCompanies: 0,
+            totalPages: 0,
+            currentPage: 1
+        }
     },
     reducers: {
         setSingleCompany: (state, action) => {
@@ -16,9 +21,12 @@ const companySlice = createSlice({
         },
         setSearchCompanyByText:(state,action)=>{
             state.searchCompanyByText = action.payload;
+        },
+        setCompanyPagination:(state,action)=>{
+            state.pagination = action.payload;
         }
     },
 });
 
-export const { setSingleCompany,setCompanies,setSearchCompanyByText } = companySlice.actions;
+export const { setSingleCompany,setCompanies,setSearchCompanyByText, setCompanyPagination } = companySlice.actions;
 export default companySlice.reducer;

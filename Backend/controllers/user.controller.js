@@ -85,12 +85,31 @@ export const register = async (req, res) => {
         // --- 3. Send Verification Email ---
         const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
         const verificationUrl = `${frontendUrl}/verify-email/${verificationToken}`;
-        const message = `Bhai, aapka JobSync account register ho gaya hai. Account activate karne ke liye niche diye gaye link par click karein:\n\n${verificationUrl}\n\nYe link 24 ghante tak valid rahega.`;
+        const message = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e1e1e1; border-radius: 10px;">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h1 style="color: #6a11cb; margin: 0;">JobSyncc</h1>
+                <p style="color: #666; font-size: 14px;">Rise Above the Competition</p>
+            </div>
+            <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px;">
+                <h2 style="color: #333; margin-top: 0;">Welcome to JobSyncc!</h2>
+                <p style="color: #555; line-height: 1.6;">Hello,</p>
+                <p style="color: #555; line-height: 1.6;">Thank you for registering with JobSyncc. To activate your account and start your journey, please verify your email address by clicking the button below:</p>
+                <div style="text-align: center; margin: 30px 0;">
+                    <a href="${verificationUrl}" style="background-color: #6a11cb; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">Verify Email Address</a>
+                </div>
+                <p style="color: #555; line-height: 1.6;">This link is valid for <strong>24 hours</strong>. If you didn't create an account, please ignore this email.</p>
+            </div>
+            <div style="text-align: center; margin-top: 20px; font-size: 12px; color: #999;">
+                <p>&copy; ${new Date().getFullYear()} JobSyncc. All rights reserved.</p>
+            </div>
+        </div>
+        `;
 
         try {
             await sendEmail({
                 email: user.email,
-                subject: "Account Verification - JobSync",
+                subject: "Account Verification - JobSyncc",
                 message,
             });
 
@@ -309,12 +328,31 @@ export const forgotPassword = async (req, res) => {
         const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
         const resetUrl = `${frontendUrl}/reset-password/${resetToken}`;
 
-        const message = `Bhai, aapka password reset karne ka link ye raha. Ye link sirf 10 minute tak valid rahega:\n\n${resetUrl}\n\nAgar aapne ye request nahi ki hai, toh please ise ignore karein.`;
+        const message = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e1e1e1; border-radius: 10px;">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h1 style="color: #6a11cb; margin: 0;">JobSyncc</h1>
+                <p style="color: #666; font-size: 14px;">Rise Above the Competition</p>
+            </div>
+            <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px;">
+                <h2 style="color: #333; margin-top: 0;">Password Reset Request</h2>
+                <p style="color: #555; line-height: 1.6;">Hello,</p>
+                <p style="color: #555; line-height: 1.6;">You requested a password reset for your JobSyncc account. Click the button below to set a new password. This link is valid for <strong>10 minutes</strong>.</p>
+                <div style="text-align: center; margin: 30px 0;">
+                    <a href="${resetUrl}" style="background-color: #6a11cb; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">Reset My Password</a>
+                </div>
+                <p style="color: #555; line-height: 1.6;">If you didn't request this, you can safely ignore this email.</p>
+            </div>
+            <div style="text-align: center; margin-top: 20px; font-size: 12px; color: #999;">
+                <p>&copy; ${new Date().getFullYear()} JobSyncc. All rights reserved.</p>
+            </div>
+        </div>
+        `;
 
         try {
             await sendEmail({
                 email: user.email,
-                subject: "Password Reset Request - JobSync",
+                subject: "Password Reset Request - JobSyncc",
                 message,
             });
 
@@ -357,6 +395,7 @@ export const resetPassword = async (req, res) => {
 
         // Hash new password
         user.password = await bcrypt.hash(password, 10);
+        user.isVerified = true; // Auto-verify on password reset
         user.resetPasswordToken = undefined;
         user.resetPasswordExpire = undefined;
 

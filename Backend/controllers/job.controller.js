@@ -180,14 +180,22 @@ export const getJobById = async (req, res) => {
 export const getAdminJob = async (req, res) => {
     try {
         const adminId = req.id;
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
 
         // Find companies belonging to the admin
         const companies = await Company.find({ UserId: adminId });
         const companyIds = companies.map(c => c._id);
 
-        const jobs = await Job.find({ company: { $in: companyIds } }).populate({
-            path: 'company'
-        });
+        const totalJobs = await Job.countDocuments({ company: { $in: companyIds } });
+        const jobs = await Job.find({ company: { $in: companyIds } })
+            .populate({
+                path: 'company'
+            })
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
 
         if (!jobs) {
             return res.status(404).json({
@@ -197,6 +205,9 @@ export const getAdminJob = async (req, res) => {
         };
         return res.status(200).json({
             jobs,
+            totalJobs,
+            totalPages: Math.ceil(totalJobs / limit),
+            currentPage: page,
             success: true
         })
     }

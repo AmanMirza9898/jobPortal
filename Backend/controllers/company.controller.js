@@ -69,10 +69,17 @@ export const registerCompany = async (req, res) => {
 
 
 export const getCompany = async (req, res) => {
-
     try {
         const userId = req.id;
-        const company = await Company.find({ UserId: userId });
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+
+        const totalCompanies = await Company.countDocuments({ UserId: userId });
+        const company = await Company.find({ UserId: userId })
+            .skip(skip)
+            .limit(limit);
+
         if (!company) {
             return res.status(404).json({
                 message: "Company not found",
@@ -83,11 +90,12 @@ export const getCompany = async (req, res) => {
         return res.status(200).json({
             message: "Company fetched successfully",
             company,
+            totalCompanies,
+            totalPages: Math.ceil(totalCompanies / limit),
+            currentPage: page,
             success: true,
         })
-    }
-
-    catch (err) {
+    } catch (err) {
         return res.status(500).json({
             message: "Failed to get company",
             success: false,

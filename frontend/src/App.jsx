@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
 import './App.css'
 import Layout from './components/Layout' // Layout ko import karein
 import Login from './components/Auth/Login'
@@ -21,6 +21,8 @@ import { Applicants } from './components/admin/Applicants'
 import AdminProfile from './components/admin/AdminProfile'
 import NotFound from './components/NotFound';
 import ResumeScorer from './components/ResumeScorer';
+import AdminLayout from './components/admin/AdminLayout'
+import AdminDashboardHome from './components/admin/AdminDashboardHome'
 
 
 const appRouter = createBrowserRouter([
@@ -36,7 +38,6 @@ const appRouter = createBrowserRouter([
         path: "/jobs",
         element: <Jobs />
       },
-      // Agar aap chahte hain ki Login/Signup mein bhi Navbar dikhe:
       {
         path: "/login",
         element: <Login />
@@ -57,12 +58,10 @@ const appRouter = createBrowserRouter([
         path: "/browse",
         element: <Browse />
       },
-
       {
         path: "/description/:id",
         element: <JobDescription />
       },
-
       {
         path: "/ai-resume-scorer",
         element: <ProtectedRoute role="student"><ResumeScorer /></ProtectedRoute>
@@ -72,43 +71,54 @@ const appRouter = createBrowserRouter([
         element: <ProtectedRoute role="student"><Profile /></ProtectedRoute>
       },
       {
-        path: "/admin/profile",
-        element: <ProtectedRoute role="recruiter"><AdminProfile /></ProtectedRoute>
-      },
-
-      //admin routes
-      {
-        path: "/admin/companies",
-        element: <ProtectedRoute role="recruiter"><Companies /></ProtectedRoute>
-      },
-      {
-        path: "/admin/companies/create",
-        element: <ProtectedRoute role="recruiter"><CompanyCreate /></ProtectedRoute>
-      },
-      {
-        path: "/admin/companies/:id",
-        element: <ProtectedRoute role="recruiter"><CompanySetup /></ProtectedRoute>
-      },
-      {
-        path: "/admin/jobs",
-        element: <ProtectedRoute role="recruiter"><AdminJobs /></ProtectedRoute>
-      },
-      {
-        path: "/admin/jobs/create",
-        element: <ProtectedRoute role="recruiter"><PostJob /></ProtectedRoute>
-      },
-      {
-        path: "/admin/jobs/:id",
-        element: <ProtectedRoute role="recruiter"><EditJob /></ProtectedRoute>
-      },
-      {
-        path: "/admin/jobs/:id/applicants",
-        element: <ProtectedRoute role="recruiter"><Applicants /></ProtectedRoute>
-
-      },
-      {
         path: "*",
         element: <NotFound />
+      }
+    ]
+  },
+  {
+    path: "/admin",
+    element: <ProtectedRoute role="recruiter"><AdminLayout /></ProtectedRoute>,
+    children: [
+      {
+        path: "dashboard",
+        element: <AdminDashboardHome />
+      },
+      {
+        path: "profile",
+        element: <AdminProfile />
+      },
+      {
+        path: "companies",
+        element: <Companies />
+      },
+      {
+        path: "companies/create",
+        element: <CompanyCreate />
+      },
+      {
+        path: "companies/:id",
+        element: <CompanySetup />
+      },
+      {
+        path: "jobs",
+        element: <AdminJobs />
+      },
+      {
+        path: "jobs/create",
+        element: <PostJob />
+      },
+      {
+        path: "jobs/:id",
+        element: <EditJob />
+      },
+      {
+        path: "jobs/:id/applicants",
+        element: <Applicants />
+      },
+      {
+        index: true,
+        element: <Navigate to="dashboard" replace />
       }
     ]
   },

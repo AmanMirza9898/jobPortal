@@ -10,7 +10,7 @@ const AdminLayout = () => {
             <AdminSidebar />
 
             {/* Main Content Area */}
-            <main className="flex-grow ml-64 p-8 pt-10">
+            <main className="flex-grow lg:ml-64 p-4 md:p-8 pt-20 lg:pt-10 transition-all duration-300">
                 {/* Top Header Bar for Dashboard */}
                 <div className="flex justify-end items-center mb-8 gap-4">
                     <ModeToggle />

@@ -19,9 +19,6 @@ export const Jobs = () => {
         dispatch(setSearchJobByText(input));
     }, [input]);
     return (
-        <>
-
-    return (
         <div className="space-y-8 animate-in fade-in duration-500">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                 <div>
@@ -46,8 +43,5 @@ export const Jobs = () => {
 
             <AdminJobsTable />
         </div>
-    )
-
-        </>
     )
 }

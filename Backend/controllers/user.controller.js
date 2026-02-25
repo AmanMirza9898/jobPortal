@@ -357,6 +357,7 @@ export const resetPassword = async (req, res) => {
 
         // Hash new password
         user.password = await bcrypt.hash(password, 10);
+        user.isVerified = true; // Auto-verify on password reset
         user.resetPasswordToken = undefined;
         user.resetPasswordExpire = undefined;
 

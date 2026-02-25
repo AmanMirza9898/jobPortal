@@ -23,11 +23,12 @@ export const Applicants = () => {
     fetchApplicants();
   }, []);
   return (
-    <div>
-      <div className='max-w-7xl mx-auto px-4'>
-        <h1 className='font-bold text-xl my-5'>Applicants ({applications?.length})</h1>
-        <ApplicantsTable />
+    <div className="space-y-8 animate-in fade-in duration-500">
+      <div>
+        <h1 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">Applicants ({applications?.length})</h1>
+        <p className="text-gray-500 font-medium mt-1">Review and manage candidates for this position.</p>
       </div>
+      <ApplicantsTable />
     </div>
   )
 }

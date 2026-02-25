@@ -55,6 +55,7 @@ const Navbar = () => {
             {
               user && user.role === 'recruiter' ? (
                 <>
+                  <li><Link to="/admin/dashboard" className={`hover:text-[#6A38C2] transition-colors ${isActive('/admin/dashboard') ? 'text-[#6A38C2] font-semibold' : ''}`}>Dashboard</Link></li>
                   <li><Link to="/admin/companies" className={`hover:text-[#6A38C2] transition-colors ${isActive('/admin/companies') ? 'text-[#6A38C2] font-semibold' : ''}`}>Companies</Link></li>
                   <li><Link to="/admin/jobs" className={`hover:text-[#6A38C2] transition-colors ${isActive('/admin/jobs') ? 'text-[#6A38C2] font-semibold' : ''}`}>Jobs</Link></li>
                 </>

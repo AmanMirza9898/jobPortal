@@ -34,25 +34,46 @@ const ForgotPassword = () => {
     };
 
     return (
-        <div>
+        <div className="min-h-screen bg-gray-50 flex flex-col">
             <Navbar />
-            <div className="flex items-center justify-center max-w-7xl mx-auto h-[80vh]">
-                <form onSubmit={submitHandler} className="w-1/2 border border-gray-100 rounded-md p-4 my-10">
-                    <h1 className="font-bold text-xl mb-5">Forgot Password</h1>
-                    <div className="my-2">
-                        <Label>Email Address</Label>
-                        <Input
-                            type="email"
-                            value={email}
-                            name="email"
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Enter your email to receive reset link"
-                        />
+            <div className="flex-grow flex items-center justify-center p-4">
+                <div className="max-w-md w-full bg-white shadow-xl rounded-2xl p-8 border border-gray-100">
+                    <div className="text-center mb-8">
+                        <h1 className="font-bold text-3xl text-gray-900 mb-2">Forgot Password</h1>
+                        <p className="text-gray-500">No worries! Enter your email to receive a secure reset link.</p>
                     </div>
-                    {
-                        loading ? <Button className="w-full my-4"> <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait </Button> : <Button type="submit" className="w-full my-4">Send Reset Link</Button>
-                    }
-                </form>
+                    
+                    <form onSubmit={submitHandler} className="space-y-6">
+                        <div className="space-y-2">
+                            <Label className="text-sm font-semibold text-gray-700">Email Address</Label>
+                            <Input
+                                type="email"
+                                value={email}
+                                name="email"
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="name@example.com"
+                                className="h-12 border-gray-200 focus:ring-2 focus:ring-purple-500"
+                            />
+                        </div>
+                        
+                        {loading ? (
+                            <Button disabled className="w-full h-12 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-all">
+                                <Loader2 className="mr-2 h-5 w-5 animate-spin" /> 
+                                Sending Link...
+                            </Button>
+                        ) : (
+                            <Button type="submit" className="w-full h-12 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg shadow-lg shadow-purple-200 transition-all transform active:scale-[0.98]">
+                                Send Reset Link
+                            </Button>
+                        )}
+                        
+                        <div className="text-center mt-6">
+                            <a href="/login" className="text-sm font-medium text-purple-600 hover:text-purple-500 transition-colors">
+                                Back to Login
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     );

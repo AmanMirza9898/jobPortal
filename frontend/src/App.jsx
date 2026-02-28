@@ -12,6 +12,7 @@ import { Browse } from './components/Browse'
 import Profile from './components/Profile'
 import JobDescription from './components/JobDescription'
 import ProtectedRoute from './components/ProtectedRoute';
+import InterviewBooking from './components/InterviewBooking'
 import { Companies } from './components/admin/Companies'
 import { CompanyCreate } from './components/admin/CompanyCreate'
 import { CompanySetup } from './components/admin/CompanySetup'
@@ -24,6 +25,7 @@ import NotFound from './components/NotFound';
 import ResumeScorer from './components/ResumeScorer';
 import AdminLayout from './components/admin/AdminLayout'
 import AdminDashboardHome from './components/admin/AdminDashboardHome'
+import AvailabilitySettings from './components/admin/AvailabilitySettings'
 
 
 const appRouter = createBrowserRouter([
@@ -72,6 +74,10 @@ const appRouter = createBrowserRouter([
         element: <ProtectedRoute role="student"><Profile /></ProtectedRoute>
       },
       {
+        path: "/book-interview/:recruiterId/:applicationId",
+        element: <InterviewBooking />
+      },
+      {
         path: "*",
         element: <NotFound />
       }
@@ -108,6 +114,10 @@ const appRouter = createBrowserRouter([
       {
         path: "applicants",
         element: <AllApplicants />
+      },
+      {
+        path: "scheduler",
+        element: <AvailabilitySettings />
       },
       {
         path: "jobs/create",

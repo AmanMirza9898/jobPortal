@@ -9,7 +9,8 @@ import {
     LogOut,
     ChevronRight,
     Menu,
-    X
+    X,
+    CalendarCheck
 } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -45,6 +46,7 @@ const AdminSidebar = () => {
         { icon: <LayoutDashboard size={20} />, label: "Dashboard", path: "/admin/dashboard" },
         { icon: <Building2 size={20} />, label: "Companies", path: "/admin/companies" },
         { icon: <Briefcase size={20} />, label: "Jobs", path: "/admin/jobs" },
+        { icon: <CalendarCheck size={20} />, label: "Scheduler", path: "/admin/scheduler" },
         { icon: <Users size={20} />, label: "Applicants", path: "/admin/applicants" },
         { icon: <UserCircle size={20} />, label: "Profile", path: "/admin/profile" },
     ];

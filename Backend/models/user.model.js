@@ -48,6 +48,15 @@ const userSchema = new mongoose.Schema(
     },
     verificationToken: String,
     verificationTokenExpire: Date,
+    googleTokens: {
+      accessToken: String,
+      refreshToken: String,
+      expiryDate: Number,
+    },
+    isGoogleConnected: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

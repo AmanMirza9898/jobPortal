@@ -8,6 +8,8 @@ import companyRoutes from './routes/company.route.js';
 import jobRoute from './routes/job.route.js';
 import applicationRoute from "./routes/application.route.js";
 import aiRoute from "./routes/ai.route.js";
+import schedulerRoute from "./routes/scheduler.route.js";
+import "./utils/scheduler.js";
 import path from 'path';
 dotenv.config({});
 const app = express();
@@ -22,7 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const corsOptions = {
-    origin: ['https://jobportal-1-wx8o.onrender.com', 'http://localhost:5173'],
+    origin: ['https://jobportal-1-wx8o.onrender.com', 'http://localhost:5173', 'https://www.jobsyncc.com'],
     credentials: true,
 }
 
@@ -34,6 +36,7 @@ app.use('/api/company', companyRoutes);
 app.use('/api/job', jobRoute);
 app.use('/api/application', applicationRoute);
 app.use('/api/ai', aiRoute);
+app.use('/api/scheduler', schedulerRoute);
 
 app.use(express.static(path.join(__dirname, 'frontend/dist')));
 

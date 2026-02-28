@@ -160,10 +160,11 @@ import sendEmail from "../utils/email.js";
             <div style="background-color: #f0fff4; padding: 20px; border-radius: 8px; border-left: 5px solid #48bb78;">
                 <h2 style="color: #2f855a; margin-top: 0;">Great News, ${applicantName}!</h2>
                 <p style="color: #555; line-height: 1.6;">Your application for the <strong>${jobTitle}</strong> position has been reviewed, and we are impressed with your profile.</p>
-                <p style="color: #555; line-height: 1.6;">We would like to invite you for an interview to discuss this opportunity further. Our team will contact you shortly with the schedule and next steps.</p>
+                <p style="color: #555; line-height: 1.6;">Please use the link below to select a suitable time for your interview:</p>
                 <div style="text-align: center; margin: 30px 0;">
-                    <span style="background-color: #48bb78; color: white; padding: 12px 25px; border-radius: 5px; font-weight: bold; display: inline-block;">Status: Shortlisted</span>
+                    <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/book-interview/${application.job.created_by}/${application._id}" style="background-color: #6a11cb; color: white; padding: 12px 25px; border-radius: 5px; font-weight: bold; text-decoration: none; display: inline-block;">Schedule Interview Now</a>
                 </div>
+                <p style="color: #666; font-size: 13px; text-align: center;">This link will take you to our one-click scheduler.</p>
             </div>
             <div style="text-align: center; margin-top: 20px; font-size: 12px; color: #999;">
                 <p>&copy; ${new Date().getFullYear()} JobSyncc. All rights reserved.</p>

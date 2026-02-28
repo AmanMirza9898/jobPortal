@@ -219,6 +219,9 @@ import sendEmail from "../utils/email.js";
   export const getRecruiterApplicants = async (req, res) => {
     try {
       const adminId = req.id;
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 10;
+      const skip = (page - 1) * limit;
 
       // Find companies belonging to the admin
       const companies = await Company.find({ UserId: adminId });
@@ -228,7 +231,10 @@ import sendEmail from "../utils/email.js";
       const jobs = await Job.find({ company: { $in: companyIds } });
       const jobIds = jobs.map(j => j._id);
 
-      // Find all applications for these jobs
+      // Get total count for pagination
+      const totalApplications = await Application.countDocuments({ job: { $in: jobIds } });
+
+      // Find paginated applications for these jobs
       const applications = await Application.find({ job: { $in: jobIds } })
         .populate({
           path: 'job',
@@ -237,10 +243,15 @@ import sendEmail from "../utils/email.js";
           }
         })
         .populate('applicant')
-        .sort({ createdAt: -1 });
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit);
 
       return res.status(200).json({
         applications,
+        totalApplications,
+        totalPages: Math.ceil(totalApplications / limit),
+        currentPage: page,
         success: true
       })
     } catch (err) {

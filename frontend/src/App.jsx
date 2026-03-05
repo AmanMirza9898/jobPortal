@@ -25,7 +25,7 @@ import NotFound from './components/NotFound';
 import ResumeScorer from './components/ResumeScorer';
 import AdminLayout from './components/admin/AdminLayout'
 import AdminDashboardHome from './components/admin/AdminDashboardHome'
-import AvailabilitySettings from './components/admin/AvailabilitySettings'
+
 
 
 const appRouter = createBrowserRouter([
@@ -115,10 +115,7 @@ const appRouter = createBrowserRouter([
         path: "applicants",
         element: <AllApplicants />
       },
-      {
-        path: "scheduler",
-        element: <AvailabilitySettings />
-      },
+
       {
         path: "jobs/create",
         element: <PostJob />

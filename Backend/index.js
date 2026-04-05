@@ -1,7 +1,8 @@
+import dotenv from 'dotenv';
+dotenv.config({});
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import connectDB from './utils/db.js';
 import userRoutes from './routes/user.route.js';
 import companyRoutes from './routes/company.route.js';
@@ -11,7 +12,6 @@ import aiRoute from "./routes/ai.route.js";
 import schedulerRoute from "./routes/scheduler.route.js";
 import "./utils/scheduler.js";
 import path from 'path';
-dotenv.config({});
 const app = express();
 const PORT = process.env.PORT || 3000;
 

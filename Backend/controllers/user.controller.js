@@ -125,7 +125,7 @@ export const register = async (req, res) => {
             });
         }
     } catch (err) {
-        console.log(err);
+        console.error("Register Error:", err);
         return res.status(500).json({ message: "Registration failed", success: false });
     }
 };
@@ -174,6 +174,7 @@ export const login = async (req, res) => {
             success: true,
         });
     } catch (err) {
+        console.error("Login Error:", err);
         return res.status(500).json({ message: "Login failed", success: false });
     }
 };
@@ -296,7 +297,7 @@ export const updateProfile = async (req, res) => {
         });
 
     } catch (err) {
-        console.error(err);
+        console.error("Profile Update Error:", err);
         return res.status(500).json({ message: "Profile update failed", success: false });
     }
 };

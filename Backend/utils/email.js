@@ -1,25 +1,29 @@
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 
 const sendEmail = async (options) => {
     try {
-        const resend = new Resend(process.env.RESEND_API_KEY);
-        const { data, error } = await resend.emails.send({
-            from: `JobSyncc <noreply@jobsyncc.com>`, 
-            to: [options.email],
-            replyTo: process.env.EMAIL_USER,
-            subject: options.subject,
-            html: options.message, 
+        const transporter = nodemailer.createTransport({
+            host: process.env.EMAIL_HOST,
+            port: process.env.EMAIL_PORT,
+            service: 'gmail', // Optional but helpful for Gmail
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS,
+            },
         });
 
-        if (error) {
-            console.error('Resend Email Error:', error);
-            throw error;
-        }
+        const mailOptions = {
+            from: `JobSyncc <${process.env.EMAIL_USER}>`,
+            to: options.email,
+            subject: options.subject,
+            html: options.message,
+        };
 
-        console.log('Email sent successfully via Resend. ID:', data.id);
-        return data;
+        const info = await transporter.sendMail(mailOptions);
+        console.log('Email sent successfully via Gmail. ID:', info.messageId);
+        return info;
     } catch (error) {
-        console.error('Resend Exception:', error);
+        console.error('Gmail SMTP Error:', error);
         throw error;
     }
 };

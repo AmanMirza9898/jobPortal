@@ -14,6 +14,7 @@ import "./utils/scheduler.js";
 import path from 'path';
 const app = express();
 const PORT = process.env.PORT || 3000;
+app.set('trust proxy', 1); // Trust the proxy (Render/Vercel) to correctly handle secure cookies
 
 const __dirname = path.resolve();
 
@@ -24,7 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const corsOptions = {
-    origin: ['https://jobportal-1-wx8o.onrender.com', 'http://localhost:5173', 'https://www.jobsyncc.com'],
+    origin: ['https://jobportal-1-wx8o.onrender.com', 'http://localhost:5173', 'https://www.jobsyncc.com', 'https://jobsyncc.com'],
     credentials: true,
 }
 
